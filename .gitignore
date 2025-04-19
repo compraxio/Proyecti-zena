@@ -2,7 +2,7 @@
 venv/
 env/
 .env/
-
+proyecto_sena/
 # Archivos de caché de Python
 __pycache__/
 *.py[cod]
