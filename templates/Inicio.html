@@ -1,52 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
-    <!-- Vinculación al CSS principal -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/Inicio.css') }}">
-</head>
-<body>
-    <!-- Barra de navegación principal -->
-    <nav class="nav-bar">
-        <div class="nav-content">
-            <!-- Logos institucionales -->
-            <div class="nav-logos">
-                <img src="{{ url_for('static', filename='img/logo-sena.png') }}" alt="Logo institucional del SENA" class="logo" title="Logo sena">
-                <img src="{{ url_for('static', filename='img/Logo-proyecto.png') }}" alt="Logo del proyecto logístico" class="logo" title="Logo del proyecto">
-            </div>
-            <!-- Título central -->
-            <div class="nav-title">
-                <h1 title="Manual técnico digital logístico para la administración, formación y distribución de almacenamiento y personas en la empresa Jumbo.">MTDL-AFDEAP</h1>
-            </div>
-            <!-- Menú de navegación -->
-            <div class="nav-menu">
-                <!-- Botones de navegación -->
-                <a href="" title="Inicio">
-                    <img src="{{ url_for('static', filename='img/casa-en-blanco.png') }}" alt="Ir a la página de inicio" class="nav-icon">
-                </a>
-                <a href="" title="Gestión de Productos">
-                    <img src="{{ url_for('static', filename='img/cajas.png') }}" alt="Gestión de productos y almacenamiento" class="nav-icon">
-                </a>
-                <a href="" title="Control de Inventario">
-                    <img src="{{ url_for('static', filename='img/alt-de-inventario.png') }}" alt="Control y registro de inventario" class="nav-icon">
-                </a>
-                <a href="" title="Prevención de Riesgos">
-                    <img src="{{ url_for('static', filename='img/casco-de-seguridad.png') }}" alt="Prevención de riesgos laborales" class="nav-icon">
-                </a>
-                <a href="" title="Optimización de Rutas">
-                    <img src="{{ url_for('static', filename='img/envio-rapido.png') }}" alt="Optimización de rutas de entrega" class="nav-icon">
-                </a>
-                <a href="" title="Gestión de Vehículos">
-                    <img src="{{ url_for('static', filename='img/mecanico-de-automoviles.png') }}" alt="Gestión y mantenimiento de vehículos" class="nav-icon">
-                </a>
-                <a href="" title="Proveedores">
-                    <img src="{{ url_for('static', filename='img/proveedor-alternativo.png') }}" alt="Gestión de proveedores" class="nav-icon">
-                </a>
-            </div>
-        </div>
-    </nav>
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Inicio.css') }}">
+{% endblock %}
+{% block content %}
     <!-- Sección de información principal -->
     <main class="main-info">
         <section class="intro-section">
@@ -56,19 +13,19 @@
             <!-- Lista de herramientas estratégicas -->
             <ul class="features-list">
                 <li>
-                    <a href="">
+                    <a href="{{ url_for('gestion_de_productos') }}">
                         <img src="{{ url_for('static', filename='img/cajas.png') }}" alt="Gestión de productos y almacenamiento" class="feature-icon">
                         <span>Gestión de Productos</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ url_for('control_de_inventario') }}">
                         <img src="{{ url_for('static', filename='img/alt-de-inventario.png') }}" alt="Control y registro de inventario" class="feature-icon">
                         <span>Control de Inventario</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ url_for('prevencion_de_riesgos') }}">
                         <img src="{{ url_for('static', filename='img/casco-de-seguridad.png') }}" alt="Prevención de riesgos laborales" class="feature-icon">
                         <span>Prevención de Riesgos</span>
                     </a>
@@ -76,19 +33,19 @@
             </ul>
             <ul class="features-list">
                 <li>
-                    <a href="">
+                    <a href="{{ url_for('optimizacion_de_rutas') }}">
                         <img src="{{ url_for('static', filename='img/envio-rapido.png') }}" alt="Optimización de rutas de entrega" class="feature-icon">
                         <span>Optimización de Rutas</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ url_for('gestion_de_vehiculos') }}">
                         <img src="{{ url_for('static', filename='img/mecanico-de-automoviles.png') }}" alt="Gestión y mantenimiento de vehículos" class="feature-icon">
                         <span>Gestión de Vehículos</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ url_for('proveedores') }}">
                         <img src="{{ url_for('static', filename='img/proveedor-alternativo.png') }}" alt="Gestión de proveedores" class="feature-icon">
                         <span>Proveedores</span>
                     </a>
@@ -142,7 +99,7 @@
     </main>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <div class="center-alert">
+            <div class="flash-messages">
                 {% for category, message in messages %}
                     <div class="alert alert-{{ category }}">
                         {{ message }}
@@ -151,5 +108,4 @@
             </div>
         {% endif %}
     {% endwith %}
-</body>
-</html>
+{% endblock %}

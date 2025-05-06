@@ -5,29 +5,14 @@ body {
     background-color: #072B46;
     margin: 0;
 }
-.alert {
-    background: transparent;
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-    font-size: 15px;
-    color: #2CDE9A;
-    padding: 10px;
-    margin: 10px 0 10px 0;
-    border: 2px solid #2CDE9A;
-    border-radius: 41px;
-    box-shadow: 0 0 5px #2CDE9A;
-}
-.center-alert {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
-}
+
+.flash-messages { margin: 20px auto; max-width: 600px; }
+.alert { padding: 10px 20px; border-radius: 4px; margin-bottom: 10px; text-align: center; font-family: 'Roboto', sans-serif; }
+.alert-success { background: #d4edda; color: #155724; }
+.alert-danger { background: #f8d7da; color: #721c24; }
 /* ================================
-   NAVBAR - Barra de navegación
-   ================================ */
+NAVBAR - Barra de navegación
+=============================== */
 .nav-bar {
     width: 100%;
     background: none;
@@ -37,7 +22,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 2px solid #2CDE9A;
     border-bottom: 2px solid #2CDE9A;
     border-left: 2px solid #2CDE9A;
     border-right: 2px solid #2CDE9A;
@@ -160,7 +144,12 @@ body {
     box-sizing: border-box;
     margin-bottom: 20px;
 }
-
+li {
+    transition: transform 0.2s;
+}
+li:hover {
+    transform: scale(1.15);
+}
 .features-list li a {
     display: flex;
     align-items: center;
@@ -178,14 +167,15 @@ body {
     margin-right: 8px;
 }
 
+
 .features-list span {
     font-size: 14px;
     font-weight: 700;
 }
 
 /* ================================
-   SECCIÓN DE CREADORES
-   ================================ */
+SECCIÓN DE CREADORES
+=============================== */
 .creators-section {
     color: #2CDE9A;
     font-family: 'Roboto', sans-serif;
@@ -229,6 +219,11 @@ body {
     margin: 20px;
     box-shadow: 0 0 25px #2CDE9A;
     object-fit: cover;
+    transition: transform 0.2s;
+}
+
+.creator-photo:hover {
+    transform: scale(1.15);
 }
 
 .creator-name {
