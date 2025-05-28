@@ -1,7 +1,7 @@
 /* ================================
-   ESTILOS GENERALES Y RESETEO
+    ESTILOS GENERALES Y RESETEO
    ================================ */
-   body {
+    body {
     background-color: #072B46;
     margin: 0;
 }
@@ -83,4 +83,154 @@ NAVBAR - Barra de navegación
 }
 .nav-icon:hover {
     transform: scale(1.15);
+}
+
+.main-section {
+    color: #2CDE9A;
+    font-family: 'Roboto', sans-serif;
+    width: fit-content;
+    font-size: 16px;
+    list-style: none;
+    text-align: center;
+    padding: 2px;
+    border-radius: 40px;
+    margin: auto;
+    margin-top: 20px;
+}
+.features-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 0;
+    margin: 0 0 2px 0;
+}
+
+.features-list li {
+    background-color: #FDFCF8;
+    width: 220px;
+    height: 60px;
+    padding: 5px;
+    margin-top: 10px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+li {
+    transition: transform 0.2s;
+}
+li:hover {
+    transform: scale(1.2);
+}
+.features-list li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: #072B46;
+}
+
+.feature-icon {
+    height: 25px;
+    width: 25px;
+    margin-right: 8px;
+}
+
+
+.features-list span {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.prov-section {
+    color: #2CDE9A;
+    font-family: 'Roboto', sans-serif;
+    width: fit-content;
+    border: 2px solid #2CDE9A;
+    box-shadow: 0px 0px 5px #2CDE9A;
+    width: 100%;
+    height: 50px;
+}
+
+.proveedor-card {
+    color: #2CDE9A;
+    font-family: 'Roboto', sans-serif;
+    border: 2px solid #2CDE9A;
+    border-radius: 40px;
+    box-shadow: 0px 0px 5px #2CDE9A;
+    background-color: #244757;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+    width: fit-content;
+
+}
+
+.proveedor-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    margin: 10px auto;
+    background-size:contain ;
+    background-position: center;
+}
+
+.proveedor-info {
+    background: #072B46;
+    border-bottom: 2px solid #2CDE9A;
+    border-radius: 40px;
+    margin: auto;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;           /* Hace que ocupe todo el ancho del contenedor */
+    max-width: 500px;      /* Opcional: limita el ancho máximo */
+    box-sizing: border-box;/* Asegura que el padding no desborde */
+    word-break: break-word;/* Rompe palabras largas si es necesario */
+}
+
+.eliminar-btn {
+    font-family: 'Roboto', sans-serif;
+    background: #072B46;
+    margin-bottom: 10px;
+    color: #fff;
+    border: none;
+    border: 2px #2CDE9A solid;
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.eliminar-btn:hover {
+    background: #c94637c2;
+}
+
+.edit {
+    font-family: 'Roboto', sans-serif;
+    background: #072B46;
+    color: #fff;
+    border: 2px #2CDE9A solid;
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+.edit:hover {
+    background: #2CDE9A;
+    color: #244757;
 }

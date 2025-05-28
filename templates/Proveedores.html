@@ -5,7 +5,41 @@
 {% endblock %}
 {% block content %}
 <main class="main-section">
-    <h2>Gestión de Proveedores</h2>
-    <p>Sección dedicada a la gestión de proveedores.</p>
+    <ul class="features-list">
+        <li>
+            <a href="{{ url_for('añadir_proveedor') }}">
+                <img src="{{ url_for('static', filename='img/proveedor-alternativo.png') }}" alt="Gestión de productos y almacenamiento" class="feature-icon">
+                <span>Añadir proveedor</span>
+            </a>
+        </li>
+    </ul>
 </main>
+{% for proveedor in empresarios %}
+<div class="proveedor-card">
+    <h2>{{ proveedor.identificacion }}</h2>
+    <img src="{{ url_for('imagen_proveedor', proveedor_id=proveedor.id) }}" alt="{{ proveedor.identificacion }}" class="proveedor-image">
+    <p class="proveedor-info"><strong>Contacto:</strong> {{ proveedor.contacto }}</p>
+    <p class="proveedor-info"><strong>Ubicacion:</strong> {{ proveedor.ubicacion }}</p>
+    <div class="proveedor-mapa">
+        <iframe
+            width="350"
+            height="250"
+            style="border:0; border-radius:15px; margin-top:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1); margin-bottom: 20px;"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q={{ proveedor.ubicacion | urlencode }}&output=embed">
+        </iframe>
+    </div>
+    <p class="proveedor-info"><strong>Condiciones:</strong> {{ proveedor.condiciones_de_pago }}</p>
+    <p class="proveedor-info"><strong>Ofrece:</strong> {{ proveedor.ofrece }}</p>
+    <p class="proveedor-info"><strong>Precio:</strong> {{ proveedor.precio }}</p>
+    <p class="proveedor-info"><strong>Tiempo de entrega:</strong> {{ proveedor.tiempo_de_entrega }}</p>
+    
+    <form action="{{ url_for('eliminar_proveedor', proveedor_id=proveedor.id) }}" method="POST">
+        <button type="submit" class="eliminar-btn">Eliminar proveedor</button>
+    </form>
+    <a href="{{ url_for('editar_proveedor', proveedor_id=proveedor.id) }}" class="edit">Editar</a>
+</div>
+{% endfor %}    
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Editar Proveedor{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Añadir-proveedor.css') }}">
+{% endblock %}
+{% block content %}
+<form method="POST" enctype="multipart/form-data" class="suggestion-form">
+    <h2 class="form-title">Editar Proveedor</h2>
+    <label class="form-label">Imagen:</label>
+    <input type="file" name="imagen" class="im">
+    <label class="form-label">Identificación:</label>
+    <input type="text" name="proveedor" value="{{ proveedor.identificacion }}" class="form-input">
+    <label class="form-label">Contacto:</label>
+    <input type="text" name="Contacto" value="{{ proveedor.contacto }}" class="form-input">
+    <label class="form-label">Ubicación:</label>
+    <input type="text" name="Ubicacion" value="{{ proveedor.ubicacion }}" class="form-input">
+    <label class="form-label">Condiciones de pago:</label>
+    <input type="text" name="Condicion" value="{{ proveedor.condiciones_de_pago }}" class="form-input">
+    <label class="form-label" >Ofrece:</label>
+    <input type="text" name="ofrece" value="{{ proveedor.ofrece }}" class="form-input">
+    <label class="form-label">Precio:</label>
+    <input type="text" name="Precio" value="{{ proveedor.precio }}" class="form-input">
+    <label class="form-label">Tiempo de entrega:</label>
+    <input type="text" name="tiempo" value="{{ proveedor.tiempo_de_entrega }}" class="form-input">
+    <button type="submit" class="form-submit">Guardar cambios</button>
+    <a href="{{ url_for('proveedor') }}" class="cancelar-btn">Cancelar</a>
+</form>
+{% endblock %}

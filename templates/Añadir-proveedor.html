@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Añadir Proveedor{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Añadir-proveedor.css') }}">
+{% endblock %}
+{% block content %}
+
+<form action="" method="post" class="suggestion-form" enctype="multipart/form-data">
+    <h3 class="form-title">Añadir proveedor</h3>
+    <!-- Campo para el nombre del usuario -->
+    <label for="imagen" class="form-label">Foto del proveedor</label>
+    <input type="file" name="imagen" id="imagen" class="im" accept="image/*">
+    <label for="proveedor" class="form-label">Nombre del proveedor*</label>
+    <input type="text" name="proveedor" id="proveedor" class="form-input" placeholder="Ingrese el nombre del proveedor" required>
+    <!-- Campo para el correo electrónico del usuario -->
+    <label for="Contacto" class="form-label">Contacto*</label>
+    <input type="text" name="Contacto" id="Contacto" class="form-input" placeholder="Ingrese su Contacto" required>
+
+    <label for="Ubicacion" class="form-label">Ubicacion</label>
+    <input type="text" name="Ubicacion" id="Ubicacion" class="form-input" placeholder="Ingrese la Ubicacion del proveedor" >
+
+    <label for="Condicion" class="form-label">Condiciones de pago</label>
+    <input type="text" name="Condicion" id="Condicion" class="form-input" placeholder="Condicion de pago" >
+
+    <label for="ofrece" class="form-label">¿Que ofrece?*</label>
+    <input type="text" name="ofrece" id="ofrece" class="form-input" placeholder="¿Que ofrece el proveedor?" required >
+
+    <label for="Precio" class="form-label">Precio*</label>
+    <input type="text" name="Precio" id="Precio" class="form-input" placeholder="Precio" required >
+
+    <label for="tiempo" class="form-label">tiempo de entrega</label>
+    <input type="text" name="tiempo" id="tiempo" class="form-input" placeholder="¿Cuanto tiempo tarda en entregar?">
+    
+    <!-- Botón para enviar el formulario -->
+    <input type="submit" class="form-submit" value="Agregar proveedor">
+</form>
+
+{% endblock %}
