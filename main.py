@@ -104,13 +104,14 @@ def index():
     if request.method == 'POST':
         nombre = request.form['nombre']
         correo = request.form['correo']
+        mensaje = request.form['Mensage']
         try:
             msg = Message(
                 "Nuevo mensaje del proyecto",
                 sender=correo,
                 recipients=["luisangelacu10@gmail.com", f"{correo}"]
             )
-            msg.body = f"De: {nombre}\nCorreo: {correo}"
+            msg.body = f"De: {nombre}\nCorreo: {correo}\n\nMensaje:\n{mensaje}"
             mail.send(msg)
             flash(f'Correo enviado correctamente a: {correo}', 'success')
             return redirect(url_for('index'))

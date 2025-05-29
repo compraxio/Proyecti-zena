@@ -19,20 +19,28 @@
     <h2 class="form-title">Editar Proveedor</h2>
     <label class="form-label">Imagen:</label>
     <input type="file" name="imagen" class="im">
+
     <label class="form-label">Identificación:</label>
     <input type="text" name="proveedor" value="{{ proveedor.identificacion }}" class="form-input">
+
     <label class="form-label">Contacto:</label>
-    <input type="text" name="Contacto" value="{{ proveedor.contacto }}" class="form-input">
+    <textarea name="Contacto" id="Contacto" class="form-input textarea-ajustada" rows="3">{{ proveedor.contacto }}</textarea>
+
     <label class="form-label">Ubicación:</label>
     <input type="text" name="Ubicacion" value="{{ proveedor.ubicacion }}" class="form-input">
+
     <label class="form-label">Condiciones de pago:</label>
-    <input type="text" name="Condicion" value="{{ proveedor.condiciones_de_pago }}" class="form-input">
-    <label class="form-label" >Ofrece:</label>
-    <input type="text" name="ofrece" value="{{ proveedor.ofrece }}" class="form-input">
+    <textarea name="Condicion" id="Condicion" class="form-input textarea-ajustada" rows="2">{{ proveedor.condiciones_de_pago }}</textarea>
+
+    <label class="form-label">Ofrece:</label>
+    <textarea name="ofrece" id="ofrece" class="form-input textarea-ajustada" rows="3">{{ proveedor.ofrece }}</textarea>
+
     <label class="form-label">Precio:</label>
-    <input type="text" name="Precio" value="{{ proveedor.precio }}" class="form-input">
+    <textarea name="Precio" id="Precio" class="form-input textarea-ajustada" rows="2">{{ proveedor.precio }}</textarea>
+
     <label class="form-label">Tiempo de entrega:</label>
     <input type="text" name="tiempo" value="{{ proveedor.tiempo_de_entrega }}" class="form-input">
+
     <button type="submit" class="form-submit">Guardar cambios</button>
     <a href="{{ url_for('proveedor') }}" class="cancelar-btn">Cancelar</a>
 </form>

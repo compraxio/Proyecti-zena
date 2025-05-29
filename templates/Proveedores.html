@@ -39,8 +39,8 @@
 <div class="proveedor-card">
     <h2>{{ proveedor.identificacion }}</h2>
     <img src="{{ url_for('imagen_proveedor', proveedor_id=proveedor.id) }}" alt="{{ proveedor.identificacion }}" class="proveedor-image">
-    <p class="proveedor-info"><strong>Contacto:</strong> {{ proveedor.contacto }}</p>
-    <p class="proveedor-info"><strong>Ubicacion:</strong> {{ proveedor.ubicacion }}</p>
+    <p class="proveedor-info"><strong>Contacto:</strong> {{ proveedor.contacto | replace('\n', '<br>') | safe }}</p>
+    <p class="proveedor-info"><strong>Ubicacion:</strong> {{ proveedor.ubicacion | replace('\n', '<br>') | safe }}</p>
     <div class="proveedor-mapa">
         <iframe
             width="350"
@@ -52,10 +52,10 @@
             src="https://www.google.com/maps?q={{ proveedor.ubicacion | urlencode }}&output=embed">
         </iframe>
     </div>
-    <p class="proveedor-info"><strong>Condiciones:</strong> {{ proveedor.condiciones_de_pago }}</p>
-    <p class="proveedor-info"><strong>Ofrece:</strong> {{ proveedor.ofrece }}</p>
-    <p class="proveedor-info"><strong>Precio:</strong> {{ proveedor.precio }}</p>
-    <p class="proveedor-info"><strong>Tiempo de entrega:</strong> {{ proveedor.tiempo_de_entrega }}</p>
+    <p class="proveedor-info"><strong>Condiciones:</strong> {{ proveedor.condiciones_de_pago | replace('\n', '<br>') | safe }}</p>
+    <p class="proveedor-info"><strong>Ofrece:</strong> {{ proveedor.ofrece | replace('\n', '<br>') | safe }}</p>
+    <p class="proveedor-info"><strong>Precio:</strong> {{ proveedor.precio | replace('\n', '<br>') | safe }}</p>
+    <p class="proveedor-info"><strong>Tiempo de entrega:</strong> {{ proveedor.tiempo_de_entrega | replace('\n', '<br>') | safe }}</p>
     <a href="{{ url_for('editar_proveedor', proveedor_id=proveedor.id) }}" class="edit">Editar</a>
     
     <form action="{{ url_for('eliminar_proveedor', proveedor_id=proveedor.id) }}" method="POST">

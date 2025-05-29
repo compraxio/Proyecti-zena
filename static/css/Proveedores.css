@@ -334,3 +334,43 @@ li:hover {
     align-items: center;
     justify-content: center;
 }
+
+.textarea-ajustada {
+    resize: vertical;           /* Solo permite cambiar el alto, no el ancho */
+    min-height: 60px;
+    max-height: 200px;
+    width: 100%;                /* Ocupa todo el ancho del form */
+    max-width: 100%;            /* No puede crecer más que el form */
+    box-sizing: border-box;     /* Incluye el padding en el ancho */
+    border-radius: 20px;
+    background-color: transparent;
+    color: #2CDE9A;
+    border-bottom: 2px solid #2CDE9A;
+    padding: 10px 12px;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+/* Personalización de la barra de scroll solo dentro del textarea */
+.textarea-ajustada::-webkit-scrollbar {
+    width: 8px;
+    background: #244757;
+    border-radius: 10px;
+}
+
+.textarea-ajustada::-webkit-scrollbar-thumb {
+    background: #2CDE9A;
+    border-radius: 10px;
+}
+
+.textarea-ajustada::-webkit-scrollbar-thumb:hover {
+    background: #1bb47a;
+}
+
+/* Firefox */
+.textarea-ajustada {
+    scrollbar-width: thin;
+    scrollbar-color: #2CDE9A #244757;
+}
