@@ -183,7 +183,7 @@ li:hover {
     height: 100px;
     border-radius: 10px;
     margin: 10px auto;
-    background-size:contain ;
+    background-size:cover ;
     background-position: center;
 }
 
@@ -374,3 +374,186 @@ li:hover {
     scrollbar-width: thin;
     scrollbar-color: #2CDE9A #244757;
 }
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 900px) {
+    .nav-content {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 10px 10px 10px;
+    }
+    .nav-title {
+        margin: 10px 0;
+        font-size: 20px;
+    }
+    .nav-menu {
+        margin-left: 0;
+        justify-content: center;
+    }
+    .main-section {
+        font-size: 14px;
+    }
+    .features-list {
+        gap: 10px;
+    }
+    .features-list li {
+        width: 160px;
+        height: 50px;
+        font-size: 13px;
+    }
+    .proveedor-card {
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 25px;
+    }
+    .proveedor-image {
+        width: 70px;
+        height: 70px;
+    }
+    .proveedor-info {
+        max-width: 95vw;
+        font-size: 14px;
+        border-radius: 25px;
+    }
+    .suggestion-form {
+        max-width: 95vw;
+        padding: 20px 10px 15px 10px;
+        border-radius: 25px;
+    }
+    .im {
+        font-size: 13px;
+        padding: 8px 15px;
+        border-radius: 20px;
+    }
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+    .nav-content {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 5px 8px 5px;
+    }
+    .nav-logos {
+        justify-content: center;
+        margin: 0;
+        gap: 5px;
+    }
+    .logo {
+        width: 45px;
+        height: 45px;
+        margin: 0 8px 0 2px;
+    }
+    .nav-title {
+        font-size: 16px;
+        padding: 7px 0;
+        border-radius: 20px;
+    }
+    .nav-title h1 {
+        font-size: 16px;
+    }
+    .nav-menu {
+        border-radius: 20px;
+        font-size: 14px;
+        padding: 2px 0;
+    }
+    .nav-icon {
+        height: 20px;
+        width: 20px;
+        margin: 5px;
+    }
+    .main-section {
+        font-size: 12px;
+        padding: 0;
+    }
+    .features-list {
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    .features-list li {
+        width: 99%;
+        min-width: 0;
+        height: 40px;
+        font-size: 12px;
+        margin-bottom: 10px;
+        border-radius: 15px;
+    }
+    .feature-icon {
+        height: 18px;
+        width: 18px;
+        margin-right: 5px;
+    }
+    .proveedor-card {
+        width: 98vw;
+        padding-left: 2vw;
+        padding-right: 2vw;
+        border-radius: 15px;
+        margin-top: 10px;
+    }
+    .proveedor-image {
+        width: 55px;
+        height: 55px;
+        margin: 5px auto;
+        border-radius: 8px;
+    }
+    .proveedor-info {
+        font-size: 12px;
+        border-radius: 12px;
+        padding: 6px;
+        max-width: 99vw;
+    }
+    .proveedor-mapa iframe {
+        width: 98vw !important;
+        height: 150px !important;
+        border-radius: 10px !important;
+    }
+    .eliminar-btn, .edit, .cancelar-btn {
+        font-size: 13px;
+        padding: 6px 10px;
+        border-radius: 10px;
+        margin-top: 6px;
+        margin-bottom: 6px;
+    }
+    .suggestion-form {
+        max-width: 99vw;
+        padding: 10px 5px 10px 5px;
+        border-radius: 15px;
+        gap: 8px;
+    }
+    .form-title {
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+    .form-label, .form-input, .textarea-ajustada {
+        font-size: 12px;
+    }
+    .form-submit {
+        font-size: 13px;
+        padding: 7px 0;
+        border-radius: 6px;
+    }
+    .textarea-ajustada {
+        min-height: 40px;
+        max-height: 120px;
+        border-radius: 10px;
+        padding: 6px 8px;
+    }
+    .im {
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 10px;
+    }
+    .Iniciar {
+        min-height: unset;
+        padding: 10px 0;
+    }
+}
+
+/* ================================
+    FIN DE ESTILOS RESPONSIVE
+   ================================ */

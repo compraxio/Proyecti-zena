@@ -99,6 +99,7 @@ NAVBAR - Barra de navegación
     width: 80%;
     margin: 50px auto 0 auto;
     text-align: center;
+    
     border: 2px solid #2CDE9A;
     border-radius: 40px;
     background-color: #244757;
@@ -348,5 +349,180 @@ SECCIÓN DE CREADORES
 }
 
 /* ================================
-    FIN DE ESTILOS
+   RESPONSIVE DESIGN
+   ================================ */
+
+/* Para tablets y pantallas medianas */
+@media (max-width: 900px) {
+    .nav-content {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 10px 10px 10px;
+    }
+    .nav-title {
+        margin: 10px 0;
+        font-size: 20px;
+    }
+    .nav-menu {
+        margin-left: 0;
+        justify-content: center;
+    }
+    .intro-section, .creators-section {
+        width: 95%;
+        font-size: 14px;
+    }
+    .features-list {
+        gap: 10px;
+        flex-direction: column;
+        align-items: center; /* Centra los li hijos horizontalmente */
+    }
+    .features-list li {
+        display: flex;
+        justify-content: center; /* Centra el contenido dentro del li */
+        align-items: center;
+        width: 90%;
+        min-width: 0;
+        height: 50px;
+        font-size: 13px;
+        border-radius: 25px;
+    }
+    .creator-photo {
+        height: 110px;
+        width: 110px;
+        margin: 10px;
+    }
+    .creators-list {
+        gap: 15px;
+    }
+    .suggestion-form {
+        max-width: 95vw;
+        padding: 20px 10px 15px 10px;
+    }
+}
+
+/* Para celulares */
+@media (max-width: 600px) {
+    .nav-content {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 5px 8px 5px;
+    }
+    .nav-logos {
+        justify-content: center;
+        margin: 0;
+        gap: 5px;
+    }
+    .logo {
+        width: 45px;
+        height: 45px;
+        margin: 0 8px 0 2px;
+    }
+    .nav-title {
+        font-size: 16px;
+        padding: 7px 0;
+        border-radius: 25px;
+    }
+    .nav-title h1 {
+        font-size: 16px;
+    }
+    .nav-menu {
+        border-radius: 25px;
+        font-size: 14px;
+        padding: 2px 0;
+    }
+    .nav-icon {
+        height: 20px;
+        width: 20px;
+        margin: 5px;
+    }
+    .main-info {
+        width: 100%;
+    }
+    .intro-section, .creators-section {
+        width: 99%;
+        font-size: 13px;
+        border-radius: 20px;
+        margin: 20px auto;
+        padding-bottom: 5px;
+    }
+    .intro-section h2, .creators-title {
+        font-size: 17px;
+    }
+    .intro-text {
+        font-size: 13px;
+        margin: 0 8px 8px 8px;
+        line-height: 20px;
+    }
+    .features-list {
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 10px;
+        align-items: center; /* Centra los li hijos horizontalmente */
+    }
+    .features-list li {
+        display: flex;
+        justify-content: center; /* Centra el contenido dentro del li */
+        align-items: center;
+        width: 95%;
+        min-width: 0;
+        height: 40px;
+        font-size: 12px;
+        margin-bottom: 10px;
+        border-radius: 20px;
+    }
+    .feature-icon {
+        height: 18px;
+        width: 18px;
+        margin-right: 5px;
+    }
+    .creators-list {
+        flex-direction: column;
+        gap: 10px;
+        margin: 10px 0;
+    }
+    .creator-card {
+        margin: 0 0 10px 0;
+    }
+    .creator-photo {
+        height: 70px;
+        width: 70px;
+        margin: 5px;
+    }
+    .creator-name {
+        font-size: 13px;
+        padding: 3px 8px;
+        border-radius: 15px;
+        margin-bottom: 5px;
+    }
+    .form-section {
+        margin-bottom: 20px;
+    }
+    .suggestion-form {
+        max-width: 99vw;
+        padding: 10px 5px 10px 5px;
+        border-radius: 20px;
+        gap: 8px;
+    }
+    .form-title {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+    .form-label, .form-input, .textarea-ajustada {
+        font-size: 13px;
+    }
+    .form-submit {
+        font-size: 14px;
+        padding: 7px 0;
+        border-radius: 6px;
+    }
+    .textarea-ajustada {
+        min-height: 40px;
+        max-height: 120px;
+        border-radius: 10px;
+        padding: 6px 8px;
+    }
+}
+
+/* ================================
+    FIN DE ESTILOS RESPONSIVE
    ================================ */
