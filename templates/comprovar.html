@@ -1,7 +1,30 @@
 {% extends "base.html" %}
 {% block title %}Editar Proveedor{% endblock %}
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/comprovar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Proveedores.css') }}">
 {% endblock %}
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+<div class="Iniciar">
+    <form action="" method="post" class="suggestion-form">
+        <label class="form-label" for="usuario">Usuario:</label>
+        <input class="form-input" type="text" id="usuario" name="usuario" placeholder="Ingrese usuario" required>
+        <label class="form-label" for="correo">Correo:</label>
+        <input class="form-input" type="email" id="correo" name="correo" placeholder="Ingrese correo" required>
+        <label class="form-label" for="Contraseña">Contraseña:</label>
+        <input class="form-input" type="password" id="password" name="password" placeholder="Ingrese contraseña" required>
+        <input type="submit" class="form-submit" value="Iniciar sesión">
+    </form>
+</div>
+
 {% endblock %}

@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Añadir Proveedor{% endblock %}
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/Añadir-proveedor.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Proveedores.css') }}">
 {% endblock %}
 {% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
 
 <form action="" method="post" class="suggestion-form" enctype="multipart/form-data">
     <h3 class="form-title">Añadir proveedor</h3>

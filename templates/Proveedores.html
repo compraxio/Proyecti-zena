@@ -4,6 +4,27 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Proveedores.css') }}">
 {% endblock %}
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+<main class="main-section">
+    <ul class="features-list">
+        <li>
+            <a href="{{ url_for('cerrar_sesion') }}">
+                <img src="{{ url_for('static', filename='img/cierre-de-sesion-de-usuario.png') }}" alt="Gestión de productos y almacenamiento" class="feature-icon">
+                <span>Cerrar Sesion</span>
+            </a>
+        </li>
+    </ul>
+</main>
 <main class="main-section">
     <ul class="features-list">
         <li>
@@ -35,11 +56,11 @@
     <p class="proveedor-info"><strong>Ofrece:</strong> {{ proveedor.ofrece }}</p>
     <p class="proveedor-info"><strong>Precio:</strong> {{ proveedor.precio }}</p>
     <p class="proveedor-info"><strong>Tiempo de entrega:</strong> {{ proveedor.tiempo_de_entrega }}</p>
+    <a href="{{ url_for('editar_proveedor', proveedor_id=proveedor.id) }}" class="edit">Editar</a>
     
     <form action="{{ url_for('eliminar_proveedor', proveedor_id=proveedor.id) }}" method="POST">
         <button type="submit" class="eliminar-btn">Eliminar proveedor</button>
     </form>
-    <a href="{{ url_for('editar_proveedor', proveedor_id=proveedor.id) }}" class="edit">Editar</a>
 </div>
 {% endfor %}    
 {% endblock %}
