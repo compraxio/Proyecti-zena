@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/IA.css') }}">
+{% endblock %}
+{% block content %}
+<div class="ia-container">
+    <h2 style="color: #2CDE9A; text-align: center; font-family: 'Roboto', sans-serif;">Nota: Borra porfavor el historial cuando termines</h>
+    <input type="text" id="question" placeholder="¿Que deseas preguntar? Nota: No tengo memoria asi que no puedo recordar preguntas anteriores" class="form-input">
+    <button onclick="askIA()" class="form-submit">Enviar</button>
+    <button onclick="borrarRespuestas()" class="form-submit">Borrar historial</button>
+    <div id="response"></div>
+</div>
+<script>
+function mostrarRespuestasGuardadas() {
+    const respuestas = JSON.parse(localStorage.getItem('respuestasIA') || '[]');
+    const responseDiv = document.getElementById('response');
+    responseDiv.innerHTML = '';
+    respuestas.forEach(texto => {
+        const newDiv = document.createElement('div');
+        newDiv.className = 'intro-section';
+        newDiv.innerHTML = texto;
+        responseDiv.appendChild(newDiv);
+    });
+}
+
+function askIA() {
+    const question = document.getElementById('question').value;
+    fetch('/IA/consultar', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({question: question})
+    })
+    .then(response => response.json())
+    .then(data => {
+        const texto = "IA: " + data.answer;
+        // Guardar en localStorage
+        const respuestas = JSON.parse(localStorage.getItem('respuestasIA') || '[]');
+        respuestas.push(texto);
+        localStorage.setItem('respuestasIA', JSON.stringify(respuestas));
+        // Mostrar en pantalla
+        mostrarRespuestasGuardadas();
+    })
+    .catch(err => console.error(err));
+}
+
+// Mostrar respuestas guardadas al cargar la página
+window.onload = mostrarRespuestasGuardadas;
+function borrarRespuestas() {
+    localStorage.removeItem('respuestasIA');
+    mostrarRespuestasGuardadas();
+}
+    </script>
+{% endblock %}

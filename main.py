@@ -2,7 +2,9 @@
 # 1. IMPORTACIÓN DE LIBRERÍAS Y CONFIGURACIÓN INICIAL
 # ============================================================
 
-from flask import Flask, render_template, url_for, request, flash, redirect, send_file, session
+from google import genai
+from google.genai import types
+from flask import Flask, render_template, url_for, request, flash, redirect, send_file, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -14,6 +16,8 @@ import io
 # ============================================================
 
 app = Flask(__name__)
+client = genai.Client(api_key="AIzaSyBGxDkqcairULlOIvMycALEvclJn3-e-_o")
+
 
 # Configuración de la base de datos SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///web.db'
@@ -62,6 +66,11 @@ class Usuarios(db.Model):
 with app.app_context():
     db.create_all()
 
+#with app.app_context():
+    #informacion = ""
+    #empresarios = proveedores.query.all()
+    #for empresario in empresarios:
+        #informacion += f"nombre: {empresario.identificacion}, ubicacion: {empresario.ubicacion}, condiciones_de_pago: {empresario.condiciones_de_pago}, ofrece: {empresario.ofrece}, precio: {empresario.precio}, tiempo_de_entrega: {empresario.tiempo_de_entrega}\n"
 # ============================================================
 # 4. RUTAS PRINCIPALES DE LA APLICACIÓN
 # ============================================================
@@ -278,6 +287,42 @@ def imagen_proveedor(proveedor_id):
     else:
         return redirect(url_for('static', filename='img/proveedor-alternativo.png'))
 
+@app.route('/IA')
+@login_required
+def IA():
+    """
+    Página de IA. Aquí se puede integrar la funcionalidad de IA.
+    """
+    return render_template('IA.html')
+
+@app.route('/IA/consultar', methods=['POST'])
+def IA_consultar():
+    informacion = ""
+    empresarios = proveedores.query.all()
+    for empresario in empresarios:
+        informacion += f"nombre: {empresario.identificacion}, ubicacion: {empresario.ubicacion}, condiciones_de_pago: {empresario.condiciones_de_pago}, ofrece: {empresario.ofrece}, precio: {empresario.precio}, tiempo_de_entrega: {empresario.tiempo_de_entrega}\n"
+    pregunta = request.json.get('question')
+    
+    response = client.models.generate_content(
+    model="models/gemini-2.0-flash-001",
+    contents=[pregunta],
+    config=types.GenerateContentConfig(
+    system_instruction=(
+            "Estás integrado en una página web dedicada a la gestión y análisis de proveedores de una base de datos, así como otras funciones del área logística. "
+            "No tienes memoria: si alguien solicita algo que requiera recordar información de interacciones anteriores, debes responder que no tienes memoria, a menos que te lo pidan explícitamente. "
+            "Al redactar contenido, usa solo encabezados HTML desde <h2> hasta <h6> (nunca <h1>). "
+            "Todo el texto principal debe ir dentro de elementos <p>. "
+            "Para resaltar partes importantes, utiliza todas las formas de resaltado disponibles en HTML, como <b>, <i>, <u>, <mark>, entre otras. "
+            "No escribas la estructura completa de HTML (no incluyas <html>, <head>, <body> ni otras etiquetas estructurales), solo el contenido necesario para insertar en una plantilla web."
+            "El contenido debe ser claro, conciso y fácil de entender. "
+            f"Si se te pregunta sobre los proveedores, utiliza la siguiente información:{informacion} "
+            "Si no tienes suficiente información para responder, indica que no puedes proporcionar una respuesta precisa."
+            ),
+        max_output_tokens=800,
+        temperature=0.2,
+        ),
+    )
+    return jsonify({"answer": response.text})
 # ============================================================
 # 6. EJECUCIÓN DE LA APLICACIÓN
 # ============================================================
