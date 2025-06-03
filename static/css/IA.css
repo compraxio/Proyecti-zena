@@ -8,8 +8,11 @@ body {
 
 .flash-messages { margin: 20px auto; max-width: 600px; }
 .alert { padding: 10px 20px; border-radius: 4px; margin-bottom: 10px; text-align: center; font-family: 'Roboto', sans-serif; }
-.alert-success { background: #d4edda; color: #155724; }
-.alert-danger { background: #f8d7da; color: #721c24; }
+.alert-success    { background: #d4edda; color: #155724; border: 1px solid #b2dfbb; }
+.alert-danger     { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.alert-warning    { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.alert-info       { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+.alert-primary    { background: #cce5ff; color: #004085; border: 1px solid #b8daff; }
 /* ================================
 NAVBAR - Barra de navegación
 =============================== */
@@ -111,14 +114,14 @@ NAVBAR - Barra de navegación
     font-weight: bold;
     border: none;
     border-radius: 20px;
-    padding: 10px;
+        padding: 6px 18px;      /* Menor padding */
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;        /* Menor tamaño de fuente */
     transition: background 0.2s;
     text-align: center;
-}
-.form-submit:hover {
-    background-color: #1bb47a;
+    width: 140px;           /* Botón más angosto */
+    min-width: unset;       /* Quita el min-width si lo hay */
+    margin-bottom: 10px;
 }
 
 .intro-section {
@@ -144,7 +147,7 @@ NAVBAR - Barra de navegación
     font-family: 'Roboto', sans-serif;
 }
 
-/* Estilos para las respuestas de la IA */
+/* Estilos para el contenido generado por la IA */
 .intro-section h2, .intro-section h3, .intro-section h4, .intro-section h5, .intro-section h6 {
     color: #2CDE9A;
     margin-top: 15px;
@@ -163,10 +166,12 @@ NAVBAR - Barra de navegación
 
 .intro-section b, .intro-section strong {
     color: #1bb47a;
+    font-weight: bold;
 }
 
 .intro-section i, .intro-section em {
     color: #ffd700;
+    font-style: italic;
 }
 
 .intro-section u {
@@ -179,4 +184,294 @@ NAVBAR - Barra de navegación
     color: #072B46;
     padding: 0 4px;
     border-radius: 3px;
+}
+
+.intro-section a {
+    color: #2CDE9A;
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.intro-section a:hover {
+    color: #1bb47a;
+    text-decoration: underline;
+}
+
+/* Estilos para listas */
+.intro-section ul, .intro-section ol {
+    margin: 10px 0 10px 25px;
+    color: #e0f7fa;
+    font-size: 16px;
+}
+.intro-section li {
+    margin-bottom: 6px;
+}
+
+/* Estilos para tablas */
+.intro-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    background: #244757;
+    color: #e0f7fa;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.intro-section th, .intro-section td {
+    border: 1px solid #2CDE9A;
+    padding: 8px 12px;
+    text-align: left;
+}
+.intro-section th {
+    background: #2CDE9A;
+    color: #072B46;
+    font-weight: bold;
+}
+
+/* Estilos para formularios y selects generados por la IA */
+.intro-section select, .intro-section option, .intro-section input, .intro-section textarea, .intro-section button {
+    background: #183642;
+    color: #e0f7fa;
+    border: 1px solid #2CDE9A;
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+    outline: none;
+    transition: border 0.2s;
+}
+.intro-section select:focus, .intro-section input:focus, .intro-section textarea:focus {
+    border: 2px solid #1bb47a;
+}
+.intro-section button {
+    background: #2CDE9A;
+    color: #072B46;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    padding: 7px 16px;
+    margin: 6px 0;
+    transition: background 0.2s;
+}
+.intro-section button:hover {
+    background: #1bb47a;
+    color: #fff;
+}
+
+/* Ajustes para la caja principal de IA */
+.ia-container {
+    width: 80vw;
+    max-width: 900px;
+    margin: 40px auto 0 auto;
+    padding: 30px 0 20px 0;
+    background: rgba(36, 71, 87, 0.85);
+    border-radius: 30px;
+    box-shadow: 0 0 10px #2CDE9A;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Ajustes para input y botones */
+.form-input {
+    width: 80%;
+    max-width: 700px;
+    min-width: 180px;
+    margin-bottom: 15px;
+}
+
+.form-submit {
+    width: 50%;
+    max-width: 220px;
+    min-width: 100px;
+    margin-bottom: 10px;
+    padding: 7px 0;
+    font-size: 15px;
+    border-radius: 16px;
+}
+
+/* Ajustes para la lista de features (botón volver) */
+.features-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.features-list li {
+    background-color: #FDFCF8;
+    width: 120px;
+    height: 32px;
+    padding: 0 6px;
+    margin-top: 8px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-size: 12px;
+    box-shadow: 0 1px 4px #2CDE9A33;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.features-list li:hover {
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px #2CDE9A66;
+}
+.features-list li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #072B46;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 0;
+}
+.feature-icon {
+    height: 16px;
+    width: 16px;
+    margin-right: 4px;
+}
+.features-list span {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Responsive para tablets */
+@media (max-width: 900px) {
+    .ia-container {
+        width: 97vw;
+        max-width: 98vw;
+        padding: 15px 0 10px 0;
+        border-radius: 20px;
+    }
+    .form-input {
+        width: 95%;
+        max-width: 98vw;
+    }
+    .form-submit {
+        width: 80%;
+        max-width: 98vw;
+        font-size: 14px;
+        border-radius: 12px;
+    }
+    .features-list {
+        gap: 10px;
+        flex-direction: column;
+        align-items: center;
+    }
+    .features-list li {
+        width: 90%;
+        min-width: 0;
+        height: 40px;
+        font-size: 13px;
+        border-radius: 14px;
+    }
+    .nav-content {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 10px 10px 10px;
+        border-radius: 0 0 25px 25px;
+    }
+    .nav-logos {
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .nav-title {
+        font-size: 18px;
+        padding: 8px 0;
+        border-radius: 25px;
+    }
+    .nav-menu {
+        flex-direction: row;
+        justify-content: center;
+        margin: 10px 0 0 0;
+        border-radius: 25px;
+    }
+}
+
+/* Responsive para celulares */
+@media (max-width: 600px) {
+    .ia-container {
+        width: 99vw;
+        max-width: 99vw;
+        padding: 8px 0 5px 0;
+        border-radius: 12px;
+    }
+    .form-input {
+        width: 98%;
+        max-width: 99vw;
+        font-size: 13px;
+        border-radius: 12px;
+    }
+    .form-submit {
+        width: 98%;
+        max-width: 99vw;
+        font-size: 13px;
+        border-radius: 10px;
+        padding: 6px 0;
+    }
+    .features-list {
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 10px;
+        align-items: center;
+    }
+    .features-list li {
+        width: 98%;
+        min-width: 0;
+        height: 32px;
+        font-size: 12px;
+        margin-bottom: 8px;
+        border-radius: 10px;
+    }
+    .feature-icon {
+        height: 14px;
+        width: 14px;
+        margin-right: 3px;
+    }
+    .features-list span {
+        font-size: 11px;
+    }
+    .nav-content {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 4px 8px 4px;
+        border-radius: 0 0 14px 14px;
+    }
+    .nav-logos {
+        justify-content: center;
+        margin-bottom: 6px;
+    }
+    .nav-title {
+        font-size: 15px;
+        padding: 5px 0;
+        border-radius: 14px;
+    }
+    .nav-title h1 {
+        font-size: 17px;
+    }
+    .nav-menu {
+        flex-direction: row;
+        justify-content: center;
+        margin: 6px 0 0 0;
+        border-radius: 14px;
+    }
+    .logo {
+        width: 38px;
+        height: 38px;
+    }
+    .nav-icon {
+        height: 20px;
+        width: 20px;
+        margin: 6px;
+    }
 }

@@ -4,11 +4,33 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/IA.css') }}">
 {% endblock %}
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
 <div class="ia-container">
     <h2 style="color: #2CDE9A; text-align: center; font-family: 'Roboto', sans-serif;">Nota: Borra porfavor el historial cuando termines</h>
     <input type="text" id="question" placeholder="¿Que deseas preguntar? Nota: No tengo memoria asi que no puedo recordar preguntas anteriores" class="form-input">
     <button onclick="askIA()" class="form-submit">Enviar</button>
     <button onclick="borrarRespuestas()" class="form-submit">Borrar historial</button>
+    <main class="main-section">
+    <ul class="features-list">
+        <li>
+            <a href="{{ url_for('cerrar_sesion') }}">
+                <img src="{{ url_for('static', filename='img/cierre-de-sesion-de-usuario.png') }}" alt="Gestión de productos y almacenamiento" class="feature-icon">
+                <span>Volver a proveedores</span>
+            </a>
+        </li>
+    </ul>
+    
+    </main>
     <div id="response"></div>
 </div>
 <script>
@@ -31,15 +53,31 @@ function askIA() {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({question: question})
     })
-    .then(response => response.json())
-    .then(data => {
-        const texto = "IA: " + data.answer;
-        // Guardar en localStorage
-        const respuestas = JSON.parse(localStorage.getItem('respuestasIA') || '[]');
-        respuestas.push(texto);
-        localStorage.setItem('respuestasIA', JSON.stringify(respuestas));
-        // Mostrar en pantalla
-        mostrarRespuestasGuardadas();
+    .then(response => {
+        const reader = response.body.getReader();
+        let texto = "IA: ";
+        const responseDiv = document.getElementById('response');
+        const newDiv = document.createElement('div');
+        newDiv.className = 'intro-section';
+        responseDiv.appendChild(newDiv);
+
+        function read() {
+            reader.read().then(({ done, value }) => {
+                if (done) {
+                    // Guardar en localStorage al terminar
+                    const respuestas = JSON.parse(localStorage.getItem('respuestasIA') || '[]');
+                    respuestas.push(texto);
+                    localStorage.setItem('respuestasIA', JSON.stringify(respuestas));
+                    return;
+                }
+                // Decodificar y mostrar el chunk
+                const chunkText = new TextDecoder().decode(value);
+                texto += chunkText;
+                newDiv.innerHTML += chunkText;
+                read();
+            });
+        }
+        read();
     })
     .catch(err => console.error(err));
 }
