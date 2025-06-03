@@ -383,7 +383,7 @@ def IA_consultar():
                 "Siempre responde de manera profesional, cordial y proactiva, ofreciendo información relevante, consejos prácticos y, si es posible, sugerencias adicionales que puedan ser de utilidad. "
                 "Puedes usar emojis para hacer el texto más atractivo y fácil de leer. "
                 "Utiliza encabezados HTML desde <h2> hasta <h6> para organizar la información (nunca uses <h1>). "
-                "Todo el texto principal debe ir dentro de elementos <p> y hacegurate de no dejar ninguna etiqueta sin cerrar. "
+                "Todo el texto principal debe ir dentro de elementos <p>. "
                 "Resalta información importante usando <b>, <i>, <u>, <mark> y otros elementos HTML según corresponda. "
                 "Si mencionas recursos externos o información de internet, incluye enlaces usando la etiqueta <a> para que el usuario pueda ampliar la información. "
                 "No incluyas la estructura completa de HTML (no uses <html>, <head>, <body>), solo el contenido necesario para insertar en una plantilla web. "
