@@ -4,8 +4,9 @@
 
 # Librerías de Google Gemini y SerpApi para IA y búsquedas web
 from google import genai
-from serpapi import GoogleSearch
 from google.genai import types
+from google.genai.types import  Tool, GenerateContentConfig, GoogleSearch
+from serpapi import GoogleSearch as Gg
 
 # Librerías de Flask para la creación de la aplicación web y manejo de peticiones
 from flask import Flask, render_template, url_for, request, flash, redirect, send_file, session, jsonify, Response
@@ -34,6 +35,8 @@ app = Flask(__name__)
 
 # Cliente de Google Gemini para IA (requiere API Key)
 client = genai.Client(api_key="AIzaSyBGxDkqcairULlOIvMycALEvclJn3-e-_o")
+#Key de api google
+Clav = "AIzaSyBi_IAVJo42jH0ziRi72nO5XrU9DM7dFcE"
 
 
 # Configuración de la base de datos SQLite
@@ -264,7 +267,8 @@ def editar_proveedor(proveedor_id):
         proveedor.ofrece = request.form['ofrece']
         proveedor.precio = request.form['Precio']
         proveedor.tiempo_de_entrega = request.form['tiempo']
-        proveedor.imagen = imagen_file.read() if imagen_file else proveedor.imagen
+        if imagen_file and imagen_file.filename:
+            proveedor.imagen = imagen_file.read()
         try:
             db.session.commit()
             flash('Proveedor actualizado correctamente.', 'success')
@@ -347,7 +351,7 @@ def IA_consultar():
     #cuando esta apagado envia true, entonces para no complicarme. cuando esta en false haga algo
     if wifi is False:
         # 3. Realizar la búsqueda en Google usando SerpApi
-        search = GoogleSearch(params)
+        search = Gg(params)
         result = search.get_dict()
         # 4. Extraer preguntas relacionadas del resultado
         Contenido = result.get("related_questions", [])
@@ -357,19 +361,15 @@ def IA_consultar():
             lista = solicitud.get('list')
             respuesta = snippet if snippet is not None else (lista if lista is not None else "Sin respuesta")
             busco += f"Respuesta: {respuesta}\n, link: {solicitud.get('link','')}\n"
-        # 6. Guardar el resultado en un archivo de texto
-        with open('result.txt', 'w', encoding='utf-8') as f:
-            f.write(busco)
-        # 7. Leer el contenido del archivo para usarlo después
-        with open('result.txt', 'r', encoding='utf-8') as f:
-            resultado = f.read()
+        resultado = busco
     else:
-        with open('result.txt', 'w', encoding='utf-8') as f:
-            f.write("El usuario no a pedido busqueda en intent.")
-        with open('result.txt', 'r', encoding='utf-8') as f:
-            resultado = f.read()
+        # 3. Si wifi es True, no realiza búsqueda y usa un mensaje predeterminado
+        resultado = "El usuario no ha pedido búsqueda en intent."
 
     # 8. Obtener información de proveedores de la base de datos
+    tools = []
+    tools.append(Tool(url_context=types.UrlContext))
+    tools.append(Tool(google_search=types.GoogleSearch))
     informacion = ""
     empresarios = proveedores.query.all()
     for empresario in empresarios:
@@ -384,9 +384,11 @@ def IA_consultar():
 
     # 9. Llamar al modelo de IA de Google Gemini para generar una respuesta
     response = client.models.generate_content_stream(
-        model="models/gemini-2.0-flash-001",
+        model="gemini-2.5-flash-preview-05-20",
         contents=[pregunta],
         config=types.GenerateContentConfig(
+            tools=tools,
+            response_modalities=["TEXT"],
             system_instruction=(
                 "Eres logicbot, un asistente inteligente especializado en logística, gestión de proveedores y apoyo a usuarios en una plataforma web. "
                 "Tu objetivo es ayudar de forma clara, útil y amigable, adaptando tu respuesta al nivel de conocimiento del usuario. "
@@ -403,7 +405,7 @@ def IA_consultar():
                 f"{resultado} "
                 "Si no tienes suficiente información para responder, indícalo de forma honesta y sugiere al usuario cómo podría obtenerla. "
                 "No tienes memoria: si el usuario solicita que recuerdes información de interacciones anteriores, responde que no tienes memoria, a menos que te lo pidan explícitamente. "
-                "Adapta el nivel de detalle y tecnicismos según la pregunta del usuario. "
+                "Adapta el nivel de detalle y tecnicismos según l   a pregunta del usuario. "
                 "Haz que cada respuesta sea visualmente atractiva, fácil de entender y, si es posible, motivadora. "
                 "IMPORTANTE: Si el usuario solicita fórmulas, símbolos, explicaciones matemáticas o cualquier contenido matemático, SIEMPRE escribe la parte matemática usando notación LaTeX, encerrando las expresiones en delimitadores $$ ... $$ para bloques o \\( ... \\) para fórmulas en línea. No expliques matemáticas sin LaTeX. "
                 "Si lo consideras útil para la explicación, puedes generar tablas usando etiquetas HTML (<table>, <tr>, <th>, <td>)."
@@ -419,6 +421,7 @@ def IA_consultar():
                     yield chunk.text
             except Exception as e:
                 yield "Error al generar la respuesta."
+                print(f"Error al generar la respuesta: {e}")
         return Response(generar(), mimetype='text/plain')
             
     except Exception as e:
