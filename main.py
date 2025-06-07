@@ -405,7 +405,7 @@ def IA_consultar():
                 f"{resultado} "
                 "Si no tienes suficiente información para responder, indícalo de forma honesta y sugiere al usuario cómo podría obtenerla. "
                 "No tienes memoria: si el usuario solicita que recuerdes información de interacciones anteriores, responde que no tienes memoria, a menos que te lo pidan explícitamente. "
-                "Adapta el nivel de detalle y tecnicismos según l   a pregunta del usuario. "
+                "Adapta el nivel de detalle y tecnicismos según la pregunta del usuario. "
                 "Haz que cada respuesta sea visualmente atractiva, fácil de entender y, si es posible, motivadora. "
                 "IMPORTANTE: Si el usuario solicita fórmulas, símbolos, explicaciones matemáticas o cualquier contenido matemático, SIEMPRE escribe la parte matemática usando notación LaTeX, encerrando las expresiones en delimitadores $$ ... $$ para bloques o \\( ... \\) para fórmulas en línea. No expliques matemáticas sin LaTeX. "
                 "Si lo consideras útil para la explicación, puedes generar tablas usando etiquetas HTML (<table>, <tr>, <th>, <td>)."
