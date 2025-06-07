@@ -147,6 +147,61 @@ NAVBAR - Barra de navegación
     font-family: 'Roboto', sans-serif;
 }
 
+/* From Uiverse.io by JaydipPrajapati1910 */ 
+.theme {
+    --bg-color: rgb(24, 19, 19);
+    position: relative;
+    margin: auto;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: var(--bg-color);
+    border-radius: 100%;
+    box-shadow: 0px 0px 5px 7px rgba(0, 0, 0, 0.199);
+    transition: all .6s ease;
+}
+
+.input {
+    cursor: pointer;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    opacity: 0;
+}
+
+.icon {
+    position: absolute;
+    top: calc(50% -13px);
+    left: calc(50% -13px);
+    width: 26px;
+    height: 26px;
+}
+
+.wifi-on {
+    fill: #2CDE9A;
+}
+
+.wifi-off {
+    display: none;
+}
+
+.input:checked ~ .wifi-off {
+    display: block;
+}
+
+.input:checked ~ .wifi-on {
+    display: none;
+}
+
+.theme:active {
+    border-radius: 100%;
+    box-shadow: inset 0px 0px 10px 0px #2CDE9A;
+    transform: translate(3px, 3px);
+}
 /* Estilos para el contenido generado por la IA */
 .intro-section h2, .intro-section h3, .intro-section h4, .intro-section h5, .intro-section h6 {
     color: #2CDE9A;
@@ -207,25 +262,73 @@ NAVBAR - Barra de navegación
     margin-bottom: 6px;
 }
 
-/* Estilos para tablas */
+/* Tablas responsivas y visualmente atractivas */
 .intro-section table {
     width: 100%;
+    max-width: 100%;
     border-collapse: collapse;
-    margin: 15px 0;
+    margin: 0;
     background: #244757;
     color: #e0f7fa;
     border-radius: 8px;
-    overflow: hidden;
+    font-size: 15px;
+    box-shadow: 0 2px 8px #2CDE9A33;
+    box-sizing: border-box;
+    /* Por defecto en escritorio/tablet */
+    display: table;
+    overflow-x: unset;
 }
+
 .intro-section th, .intro-section td {
     border: 1px solid #2CDE9A;
     padding: 8px 12px;
     text-align: left;
+    min-width: 80px;
+    word-break: break-word;
+    box-sizing: border-box;
 }
+
 .intro-section th {
     background: #2CDE9A;
     color: #072B46;
     font-weight: bold;
+    text-align: center;
+}
+
+.intro-section tr:nth-child(even) {
+    background: #29506b;
+}
+
+.intro-section tr:hover {
+    background: #183642;
+}
+
+/* Responsive para móviles: tabla scrolleable lateralmente */
+@media (max-width: 600px) {
+    .intro-section table {
+        display: block;
+        overflow-x: auto;
+        font-size: 13px;
+        border-radius: 6px;
+    }
+    .intro-section th, .intro-section td {
+        min-width: 60px;
+        padding: 6px 6px;
+    }
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 600px) {
+    .intro-section table {
+        font-size: 13px;
+        padding: 0;
+        display: block; /* Solo en móviles, para scroll horizontal si es necesario */
+        overflow-x: auto;
+    }
+    .intro-section th, .intro-section td {
+        padding: 6px 6px;
+        min-width: 60px;
+    }
 }
 
 /* Estilos para formularios y selects generados por la IA */
@@ -272,6 +375,24 @@ NAVBAR - Barra de navegación
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+/* Asegura que el contenedor principal no permita desbordes */
+.ia-container {
+    max-width: 60%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px 12px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 600px) {
+    .ia-container {
+        max-width: 98vw;
+        padding: 12px 2vw;
+    }
 }
 
 /* Ajustes para input y botones */
@@ -334,6 +455,12 @@ NAVBAR - Barra de navegación
     font-size: 12px;
     font-weight: 600;
     padding: 0;
+}
+
+.features-list li,
+.features-list li a,
+.features-list li a span {
+    font-family: 'Roboto', sans-serif;
 }
 .feature-icon {
     height: 16px;
@@ -474,4 +601,21 @@ NAVBAR - Barra de navegación
         width: 20px;
         margin: 6px;
     }
+}
+
+/* Asegura que los párrafos y el contenido generado por la IA se ajusten */
+.intro-section p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+/* Si la IA genera tablas o listas, también protégelas */
+.intro-section, .intro-section ul, .intro-section ol, .intro-section table {
+    max-width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
 }

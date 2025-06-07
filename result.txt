@@ -1,8 +1,1 @@
-Respuesta: La inteligencia artificial (IA) es un conjunto de tecnologías que permiten que las computadoras realicen una variedad de funciones avanzadas, incluida la capacidad de ver, comprender y traducir lenguaje hablado y escrito, analizar datos, hacer recomendaciones y mucho más.
-, link: https://cloud.google.com/learn/what-is-artificial-intelligence?hl=es-419#:~:text=La%20inteligencia%20artificial%20(IA)%20es,hacer%20recomendaciones%20y%20mucho%20m%C3%A1s.
-Respuesta: ['Asistentes virtuales. ... ', 'Sistemas de recomendación. ... ', 'Coches autónomos. ... ', 'Reconocimiento facial. ... ', 'Marketing personalizado. ... ', 'Predicción del clima. ... ', 'Traducción automática. ... ', 'Redes sociales.']
-, link: https://www.esneca.com/blog/10-ejemplos-de-inteligencia-artificial/
-Respuesta: Dicho de otro modo: La inteligencia artificial (IA) es un campo de la informática que se enfoca en crear sistemas que puedan realizar tareas que normalmente requieren inteligencia humana, como el aprendizaje, el razonamiento y la percepción.
-, link: https://planderecuperacion.gob.es/noticias/que-es-inteligencia-artificial-ia-prtr#:~:text=Dicho%20de%20otro%20modo%3A,el%20razonamiento%20y%20la%20percepci%C3%B3n.
-Respuesta: La IA puede ayudar a analizar el comportamiento de los usuarios. Puede rastrear y analizar datos como los clics, el desplazamiento y el tiempo que los usuarios pasan en cada página.
-, link: https://www.hostinger.es/tutoriales/inteligencia-artificial-para-paginas-web#:~:text=La%20IA%20puede%20ayudar%20a,usuarios%20pasan%20en%20cada%20p%C3%A1gina.
+El usuario no a pedido busqueda en intent.

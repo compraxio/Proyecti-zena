@@ -319,17 +319,11 @@ def IA():
 
 @app.route('/IA/consultar', methods=['POST'])
 def IA_consultar():
-    """
-    Ruta para consultar la IA.
-    1. Recibe una pregunta del usuario.
-    2. Realiza una búsqueda en Google usando SerpApi.
-    3. Extrae preguntas relacionadas y respuestas.
-    4. Consulta la base de datos de proveedores.
-    5. Llama al modelo de IA de Google Gemini para generar una respuesta personalizada.
-    6. Devuelve la respuesta en formato JSON.
-    """
-    # 1. Obtener la pregunta enviada por el usuario (JSON)
     pregunta = request.json.get('question')
+    data = request.get_json()
+    wifi = data.get('wifi')
+    
+    # 1. Obtener la pregunta enviada por el usuario (JSON)
     busco = ""
     resultado = ""
     # 2. Parámetros para la búsqueda en Google (SerpApi)
@@ -341,23 +335,39 @@ def IA_consultar():
         "google_domain": "google.com.mx",
         "api_key": key  # Usa tu variable de clave de SerpApi
     }
-    # 3. Realizar la búsqueda en Google usando SerpApi
-    search = GoogleSearch(params)
-    result = search.get_dict()
-    # 4. Extraer preguntas relacionadas del resultado
-    Contenido = result.get("related_questions", [])
-    # 5. Construir una cadena con las preguntas y respuestas encontradas
-    for solicitud in Contenido:
-        snippet = solicitud.get('snippet')
-        lista = solicitud.get('list')
-        respuesta = snippet if snippet is not None else (lista if lista is not None else "Sin respuesta")
-        busco += f"Respuesta: {respuesta}\n, link: {solicitud.get('link','')}\n"
-    # 6. Guardar el resultado en un archivo de texto
-    with open('result.txt', 'w', encoding='utf-8') as f:
-        f.write(busco)
-    # 7. Leer el contenido del archivo para usarlo después
-    with open('result.txt', 'r', encoding='utf-8') as f:
-        resultado = f.read()
+    """
+    Ruta para consultar la IA.
+    1. Recibe una pregunta del usuario.
+    2. Realiza una búsqueda en Google usando SerpApi.
+    3. Extrae preguntas relacionadas y respuestas.
+    4. Consulta la base de datos de proveedores.
+    5. Llama al modelo de IA de Google Gemini para generar una respuesta personalizada.
+    6. Devuelve la respuesta en formato JSON.
+    """
+    #cuando esta apagado envia true, entonces para no complicarme. cuando esta en false haga algo
+    if wifi is False:
+        # 3. Realizar la búsqueda en Google usando SerpApi
+        search = GoogleSearch(params)
+        result = search.get_dict()
+        # 4. Extraer preguntas relacionadas del resultado
+        Contenido = result.get("related_questions", [])
+        # 5. Construir una cadena con las preguntas y respuestas encontradas
+        for solicitud in Contenido:
+            snippet = solicitud.get('snippet')
+            lista = solicitud.get('list')
+            respuesta = snippet if snippet is not None else (lista if lista is not None else "Sin respuesta")
+            busco += f"Respuesta: {respuesta}\n, link: {solicitud.get('link','')}\n"
+        # 6. Guardar el resultado en un archivo de texto
+        with open('result.txt', 'w', encoding='utf-8') as f:
+            f.write(busco)
+        # 7. Leer el contenido del archivo para usarlo después
+        with open('result.txt', 'r', encoding='utf-8') as f:
+            resultado = f.read()
+    else:
+        with open('result.txt', 'w', encoding='utf-8') as f:
+            f.write("El usuario no a pedido busqueda en intent.")
+        with open('result.txt', 'r', encoding='utf-8') as f:
+            resultado = f.read()
 
     # 8. Obtener información de proveedores de la base de datos
     informacion = ""
@@ -395,6 +405,8 @@ def IA_consultar():
                 "No tienes memoria: si el usuario solicita que recuerdes información de interacciones anteriores, responde que no tienes memoria, a menos que te lo pidan explícitamente. "
                 "Adapta el nivel de detalle y tecnicismos según la pregunta del usuario. "
                 "Haz que cada respuesta sea visualmente atractiva, fácil de entender y, si es posible, motivadora. "
+                "IMPORTANTE: Si el usuario solicita fórmulas, símbolos, explicaciones matemáticas o cualquier contenido matemático, SIEMPRE escribe la parte matemática usando notación LaTeX, encerrando las expresiones en delimitadores $$ ... $$ para bloques o \\( ... \\) para fórmulas en línea. No expliques matemáticas sin LaTeX. "
+                "Si lo consideras útil para la explicación, puedes generar tablas usando etiquetas HTML (<table>, <tr>, <th>, <td>)."
             ),
             temperature=0.2,
         ),
