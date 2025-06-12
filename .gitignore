@@ -3,6 +3,7 @@ venv/
 env/
 .env/
 proyecto_sena/
+osmnx_cache/
 # Archivos de caché de Python
 __pycache__/
 *.py[cod]
