@@ -26,6 +26,8 @@ from functools import wraps
 # Librería estándar para manejo de archivos binarios
 import io
 
+from services.correo import correo_error
+
 # ============================================================
 # 2. CONFIGURACIÓN DE LA APLICACIÓN Y EXTENSIONES
 # ============================================================
@@ -135,6 +137,7 @@ def index():
             return redirect(url_for('index'))
         except Exception as e:
             print(f"Error al enviar el correo: {e}")
+            correo_error(e)
             flash('Error al enviar el correo', 'danger')
             return redirect(url_for('index'))
     return render_template('Inicio.html')
@@ -246,6 +249,7 @@ def añadir_proveedor():
             return redirect("/proveedor")
         except Exception as e:
             print(f"Error al guardar: {e}")
+            correo_error(e)
             flash('Error al añadir el proveedor, verifique los datos.', 'danger')
             return redirect(url_for('proveedor'))
     return render_template('Añadir-proveedor.html')
@@ -275,6 +279,7 @@ def editar_proveedor(proveedor_id):
             return redirect("/proveedor")
         except Exception as e:
             print(f"Error al actualizar: {e}")
+            correo_error(e)
             flash('Error al actualizar el proveedor, verifique los datos.', 'danger')
             return redirect(url_for('proveedor'))
     return render_template('Editar-proveedor.html', proveedor=proveedor)
@@ -293,6 +298,7 @@ def eliminar_proveedor(proveedor_id):
         flash('Proveedor eliminado correctamente.', 'success')
     except Exception as e:
         print(f"Error al eliminar el proveedor: {e}")
+        correo_error(e)
         flash('Error al eliminar el proveedor.', 'danger')
     return redirect(url_for('proveedor'))
 
@@ -351,17 +357,22 @@ def IA_consultar():
     #cuando esta apagado envia true, entonces para no complicarme. cuando esta en false haga algo
     if wifi is False:
         # 3. Realizar la búsqueda en Google usando SerpApi
-        search = Gg(params)
-        result = search.get_dict()
-        # 4. Extraer preguntas relacionadas del resultado
-        Contenido = result.get("related_questions", [])
-        # 5. Construir una cadena con las preguntas y respuestas encontradas
-        for solicitud in Contenido:
-            snippet = solicitud.get('snippet')
-            lista = solicitud.get('list')
-            respuesta = snippet if snippet is not None else (lista if lista is not None else "Sin respuesta")
-            busco += f"Respuesta: {respuesta}\n, link: {solicitud.get('link','')}\n"
-        resultado = busco
+        try:
+            search = Gg(params)
+            result = search.get_dict()
+        except Exception as e:
+            correo_error(e)
+            resultado = "Error en la búsqueda."
+        else:
+            # 4. Extraer preguntas relacionadas del resultado
+            Contenido = result.get("related_questions", [])
+            # 5. Construir una cadena con las preguntas y respuestas encontradas
+            for solicitud in Contenido:
+                snippet = solicitud.get('snippet')
+                lista = solicitud.get('list')
+                respuesta = snippet if snippet is not None else (lista if lista is not None else "Sin respuesta")
+                busco += f"Respuesta: {respuesta}\n, link: {solicitud.get('link','')}\n"
+            resultado = busco
     else:
         # 3. Si wifi es True, no realiza búsqueda y usa un mensaje predeterminado
         resultado = "El usuario no ha pedido búsqueda en intent."
@@ -391,7 +402,7 @@ def IA_consultar():
             response_modalities=["TEXT"],
             system_instruction=(
                 "Eres logicbot, un asistente inteligente especializado en logística, gestión de proveedores y apoyo a usuarios en una plataforma web. "
-                "Tu objetivo es ayudar de forma clara, útil y amigable, adaptando tu respuesta al nivel de conocimiento del usuario. "
+                "Tu objetivo es ayudar de forma clara, útil y amigable, adaptando tu respuesta al nivel de conocimiento del usuario y lo que este pregunta, enfocate mas en lo que el te esta preguntado. "
                 "Siempre responde de manera profesional, cordial y proactiva, ofreciendo información relevante, consejos prácticos y, si es posible, sugerencias adicionales que puedan ser de utilidad. "
                 "Puedes usar emojis para hacer el texto más atractivo y fácil de leer. "
                 "Utiliza encabezados HTML desde <h2> hasta <h6> para organizar la información (nunca uses <h1>). "
@@ -420,11 +431,13 @@ def IA_consultar():
                 for chunk in response:
                     yield chunk.text
             except Exception as e:
+                correo_error(e)
                 yield "Error al generar la respuesta."
                 print(f"Error al generar la respuesta: {e}")
         return Response(generar(), mimetype='text/plain')
             
     except Exception as e:
+        correo_error(e)
         flash('Error al generar la respuesta de IA', 'danger')
         print(f"Error al generar la respuesta: {e}")
         return jsonify({"answer": "No se pudo generar una respuesta en este momento. Inténtalo más tarde."})
