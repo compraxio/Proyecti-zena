@@ -215,27 +215,27 @@ def ruta (place, coordenadas, mode = "drive", simple =False, soloIdaTiempo = Fal
         
     }
 
-lat, lon = obtener_coordenadas("Carretera Turbaco - Arjona, Turbaco, Bolívar, Caribe, Colombia")
+#lat, lon = obtener_coordenadas("Carretera Turbaco - Arjona, Turbaco, Bolívar, Caribe, Colombia")
 
 
-info2, encontrados = sugerencias(lon, lat)
-print(f"Total de POIs encontrados: {encontrados}")
-print(info2)
-for i in info2:
-    print("--------------------------------")
-    time.sleep(1)  # Para no saturar la API
-    print(reverse_geocode(i[1], i[0]))
+#info2, encontrados = sugerencias(lon, lat)
+#print(f"Total de POIs encontrados: {encontrados}")
+#print(info2)
+#for i in info2:
+    #print("--------------------------------")
+    #time.sleep(1)  # Para no saturar la API
+    #print(reverse_geocode(i[1], i[0]))
 
-coordenadas = [
-    (4.677173, -74.142900),
-    (4.677824, -74.123845),
-    (4.662733, -74.103014),
-    (4.638812, -74.094944),
-    (4.647631, -74.062284),
-    (4.657138, -74.058831),
-    (4.664510, -74.052232)
-]
+#coordenadas = [
+    #(4.677173, -74.142900),
+    #(4.677824, -74.123845),
+    #(4.662733, -74.103014),
+    #(4.638812, -74.094944),
+    #(4.647631, -74.062284),
+    #(4.657138, -74.058831),
+    #(4.664510, -74.052232)
+#]
 
-rut = ruta("Bogotá, Colombia", coordenadas, mode="drive", simple=False, soloIdaTiempo=False, idaVeulta=True)
+#rut = ruta("Bogotá, Colombia", coordenadas, mode="drive", simple=False, soloIdaTiempo=False, idaVeulta=True)
 
-print(rut)
+#print(rut)

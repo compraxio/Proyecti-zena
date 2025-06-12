@@ -41,6 +41,7 @@ from functools import wraps
 import io
 
 from services.correo import correo_error
+from services.Ruta import *
 
 # ============================================================
 # 2. CONFIGURACIÓN DE LA APLICACIÓN Y EXTENSIONES
