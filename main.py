@@ -2,6 +2,20 @@
 # 1. IMPORTACIÓN DE LIBRERÍAS Y CONFIGURACIÓN INICIAL
 # ============================================================
 
+#librerias para ruta
+import osmnx as ox
+import networkx as nx
+import matplotlib.pyplot as plt
+from geopy.distance import great_circle
+import folium  # <- NUEVO
+import time
+from networkx.algorithms import approximation as approx
+import gpxpy
+import gpxpy.gpx
+import geopandas as gpd
+import csv
+from pathlib import Path
+
 # Librerías de Google Gemini y SerpApi para IA y búsquedas web
 from google import genai
 from google.genai import types
