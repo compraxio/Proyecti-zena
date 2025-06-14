@@ -33,14 +33,15 @@ from flask_mail import Mail, Message
 
 # Werkzeug para manejo seguro de contraseñas
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import pyotp
+import qrcode
 # Función wraps para crear decoradores personalizados
 from functools import wraps
 
 # Librería estándar para manejo de archivos binarios
 import io
 
-from services.correo import correo_error
+from services.correo import correo_error, qr
 from services.Ruta import *
 
 # ============================================================
@@ -49,6 +50,8 @@ from services.Ruta import *
 
 # Inicialización de la aplicación Flask
 app = Flask(__name__)
+
+#qr("correo","nombre de aplicacion")
 
 # Cliente de Google Gemini para IA (requiere API Key)
 client = genai.Client(api_key="AIzaSyBGxDkqcairULlOIvMycALEvclJn3-e-_o")
@@ -128,6 +131,34 @@ def login_required(f):
 # ---------------------------
 # Página de inicio y envío de correo
 # ---------------------------
+
+@app.route('/usuario/<key>', methods=['GET', 'POST'])
+def usuario(key):
+    
+    SECRET_TOTP = "MILH6SJUVAPI6UFEDZ633CTNPRVJULV5"
+    totp = pyotp.TOTP(SECRET_TOTP)
+    
+    if totp.verify(str(key), valid_window=1):
+        try:
+            if request.method == 'POST':
+                user = Usuarios(
+                    Usuario = request.form['User'],
+                    correo = request.form['Email'],
+                    contraseña = generate_password_hash(request.form['Pas'])
+                )
+                db.session.add(user)
+                db.session.commit()
+                flash('Usuario registrado exitosamente', 'success')
+                return redirect(url_for('comprobar_usuario'))
+        except Exception as e:
+            correo_error(e)
+            print(f"Fallo al ingresar: {e}")
+            return redirect(url_for('inicio'))
+        return render_template('usuario.html')
+    else:
+        flash('Código inválido o expirado.', 'danger')
+        return redirect(url_for('index'))
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @app.route('/inicio', methods=['GET', 'POST'])

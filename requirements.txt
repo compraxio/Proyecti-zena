@@ -1,4 +1,5 @@
 Flask>=2.0.0
+flask-login
 Flask-SQLAlchemy>=3.0.0
 Flask-Mail>=0.9.1
 Werkzeug>=2.0.0
@@ -13,3 +14,5 @@ gpxpy>=1.5.0
 geopandas>=0.13.0
 scikit-learn>=1.2.0
 gunicorn>=21.2.0
+pyotp
+qrcode[pil]

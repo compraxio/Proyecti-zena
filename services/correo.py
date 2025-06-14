@@ -1,6 +1,7 @@
 from flask_mail import Mail, Message
 from flask import Flask, render_template, url_for, request, flash, redirect, send_file, session, jsonify, Response
-
+import pyotp
+import qrcode
 app = Flask(__name__)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -21,3 +22,11 @@ def correo_error(error):
         mail.send(msg)
     except Exception as e:
         print(f"Fallo al enviar el correo: {e}")
+
+def qr(username, name_aplication):
+    secret = pyotp.random_base32()
+    totp = pyotp.TOTP(secret)
+    url = totp.provisioning_uri(username, issuer_name=name_aplication)
+    img = qrcode.make(url)
+    img.save(f"static/qr/{username}.png")
+    return secret

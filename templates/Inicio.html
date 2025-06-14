@@ -4,11 +4,22 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Inicio.css') }}">
 {% endblock %}
 {% block content %}
-    <!-- Sección de información principal -->
-    <main class="main-info">
-        <section class="intro-section">
-            <h2>Introducción</h2>
-            <p class="intro-text">En el ámbito logístico, la gestión eficiente de almacenamiento, transporte y distribución es fundamental para garantizar la competitividad y el cumplimiento de los estándares de calidad y seguridad. Este proyecto surge como respuesta a la necesidad de optimizar estos procesos mediante una plataforma web integral, diseñada para centralizar y automatizar las operaciones logísticas, desde el control de inventarios hasta la evaluación de proveedores.
+<!-- Sección de información principal -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+<main class="main-info">
+    <section class="intro-section">
+        <h2>Introducción</h2>
+        <p class="intro-text">En el ámbito logístico, la gestión eficiente de almacenamiento, transporte y distribución es fundamental para garantizar la competitividad y el cumplimiento de los estándares de calidad y seguridad. Este proyecto surge como respuesta a la necesidad de optimizar estos procesos mediante una plataforma web integral, diseñada para centralizar y automatizar las operaciones logísticas, desde el control de inventarios hasta la evaluación de proveedores.
             La plataforma propuesta integra herramientas estratégicas como:</p>
             <!-- Lista de herramientas estratégicas -->
             <ul class="features-list">
@@ -100,15 +111,4 @@
             <input type="submit" class="form-submit" value="Enviar Formulario">
         </form>
     </main>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
 {% endblock %}
