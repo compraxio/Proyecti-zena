@@ -42,7 +42,7 @@ def reverse_geocode(lat, lon):
         return resp.json().get('display_name')
     return "Error al obtener dirección"
 
-def sugerencias(lon, lat):
+def sugerencias(lon, lat, categoria = 596):
     url = "https://api.openrouteservice.org/pois"
 
     headers = {
@@ -59,7 +59,7 @@ def sugerencias(lon, lat):
             "buffer": 1000
         },
         "filters": {
-            "category_ids": [ 596 ]
+            "category_ids": [ categoria ]
         }
     }
 
@@ -205,8 +205,8 @@ def ruta (place, coordenadas, mode = "drive", simple =False, soloIdaTiempo = Fal
         folium.Marker([lat, lon], popup=nombre).add_to(mapa)
     mapa.save("mapa_personalizado.html")
     #ox.save_graphml(G, filepath="grafo_usado.graphml")
-    exportar_ruta_gpx(G, ruta)
-    exportar_ruta_csv(G, ruta)
+    #exportar_ruta_gpx(G, ruta)
+    #exportar_ruta_csv(G, ruta)
     return {
         "tiempo_estimado": segundos_a_tiempo(tiempo_total),
         "distancia_km": f"{distancia_total/1000:.2f} km",
@@ -237,5 +237,3 @@ def ruta (place, coordenadas, mode = "drive", simple =False, soloIdaTiempo = Fal
 #]
 
 #rut = ruta("Bogotá, Colombia", coordenadas, mode="drive", simple=False, soloIdaTiempo=False, idaVeulta=True)
-
-#print(rut)
