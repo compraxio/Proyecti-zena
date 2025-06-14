@@ -19,7 +19,7 @@ from pathlib import Path
 # Librerías de Google Gemini y SerpApi para IA y búsquedas web
 from google import genai
 from google.genai import types
-from google.genai.types import  Tool
+from google.genai.types import  Tool, GenerateContentConfig, GoogleSearch
 from serpapi import GoogleSearch as Gg
 
 # Librerías de Flask para la creación de la aplicación web y manejo de peticiones
