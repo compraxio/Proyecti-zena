@@ -1,9 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Charset y configuración responsive -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Información general -->
+    <meta name="author" content="Luis Angel Acuña Cardenas">
+    <meta name="robots" content="noimageindex">
+    <meta name="keywords" content="logística, plataforma web, inteligencia artificial, automatización, cadena de suministro, gestión logística, inventario, transporte, distribución, almacenamiento, machine learning, big data, análisis predictivo, monitoreo en tiempo real, optimización de rutas, control de inventario, evaluación de proveedores, trazabilidad, algoritmos inteligentes, planificación logística, visualización de datos, reducción de costos">
+
+    <!-- SEO Primario -->
+    <title>LogiX - {% block title %}{% endblock %}</title>
+    <meta name="title" content="LogiX">
+    <meta name="description" content="Plataforma web de gestión logística con inteligencia artificial, diseñada para optimizar inventarios, rutas, transporte y proveedores en tiempo real. Automatiza procesos, reduce errores y toma decisiones más inteligentes en cada paso de la cadena de suministro.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://flask-app-1edj.onrender.com"> <!-- Cambia esta URL por la tuya -->
+    <meta property="og:title" content="LogiX">
+    <meta property="og:description" content="Plataforma web de gestión logística con inteligencia artificial, diseñada para optimizar inventarios, rutas, transporte y proveedores en tiempo real. Automatiza procesos, reduce errores y toma decisiones más inteligentes en cada paso de la cadena de suministro.">
+    <meta property="og:image" content="https://flask-app-1edj.onrender.com/static/img/red-social.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://flask-app-1edj.onrender.com"> <!-- Cambia esta URL por la tuya -->
+    <meta property="twitter:title" content="LogiX">
+    <meta property="twitter:description" content="Plataforma web de gestión logística con inteligencia artificial, diseñada para optimizar inventarios, rutas, transporte y proveedores en tiempo real. Automatiza procesos, reduce errores y toma decisiones más inteligentes en cada paso de la cadena de suministro.">
+    <meta property="twitter:image" content="https://flask-app-1edj.onrender.com/static/img/red-social.png">
+
     <link rel="icon" href="../static/img/Icono-sena.png" type="image/png">
     <!-- Vinculación al CSS principal -->
     {% block css %}
