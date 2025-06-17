@@ -281,7 +281,9 @@ SECCIÓN DE CREADORES
 }
 
 .form-input {
-    padding: 8px 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 12px;
     border: none;
     border-bottom: 3px solid #2CDE9A;
     border-radius: 41px;
@@ -290,7 +292,6 @@ SECCIÓN DE CREADORES
     margin-bottom: 10px;
     background-color: transparent;
     color: #2CDE9A;
-    outline: none;
 }
 .form-submit {
     background-color: #2CDE9A;
@@ -309,21 +310,16 @@ SECCIÓN DE CREADORES
 }
 
 .textarea-ajustada {
-    resize: vertical;           /* Solo permite cambiar el alto, no el ancho */
-    min-height: 60px;
+    resize: none;           /* Solo permite cambiar el alto, no el ancho */
+    min-width: 100%;            
     max-height: 200px;
-    width: 100%;                /* Ocupa todo el ancho del form */
-    max-width: 100%;            /* No puede crecer más que el form */
-    box-sizing: border-box;     /* Incluye el padding en el ancho */
     border-radius: 20px;
     background-color: transparent;
     color: #2CDE9A;
     border-bottom: 2px solid #2CDE9A;
-    padding: 10px 12px;
     font-size: 15px;
     font-family: 'Roboto', sans-serif;
     margin-bottom: 10px;
-    outline: none;
 }
 
 /* Personalización de la barra de scroll solo dentro del textarea */

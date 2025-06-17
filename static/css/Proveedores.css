@@ -252,14 +252,13 @@ li:hover {
     padding: 30px 25px 20px 25px;
     display: flex;
     flex-direction: column;
-
     gap: 15px;
 }
 .im {
+    box-sizing: border-box;
     color: #2CDE9A;
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
-    list-style: none;
     margin: auto;
     border: 2px solid #2CDE9A;
     border-radius: 40px;
@@ -280,7 +279,9 @@ li:hover {
     margin-bottom: 1px;
 }
 .form-input {
-    padding: 8px 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 12px;
     border: none;
     border-bottom: 3px solid #2CDE9A;
     border-radius: 41px;
@@ -289,7 +290,6 @@ li:hover {
     margin-bottom: 10px;
     background-color: transparent;
     color: #2CDE9A;
-    outline: none;
 }
 .form-submit {
     background-color: #2CDE9A;
@@ -336,21 +336,16 @@ li:hover {
 }
 
 .textarea-ajustada {
-    resize: vertical;           /* Solo permite cambiar el alto, no el ancho */
-    min-height: 60px;
+    resize: none;           /* Solo permite cambiar el alto, no el ancho */
+    min-width: 100%;            
     max-height: 200px;
-    width: 100%;                /* Ocupa todo el ancho del form */
-    max-width: 100%;            /* No puede crecer más que el form */
-    box-sizing: border-box;     /* Incluye el padding en el ancho */
     border-radius: 20px;
     background-color: transparent;
     color: #2CDE9A;
     border-bottom: 2px solid #2CDE9A;
-    padding: 10px 12px;
     font-size: 15px;
     font-family: 'Roboto', sans-serif;
     margin-bottom: 10px;
-    outline: none;
 }
 
 /* Personalización de la barra de scroll solo dentro del textarea */
