@@ -207,10 +207,15 @@ def control_de_inventario():
     """Página de control de inventario."""
     return render_template('Control-de-inventario.html')
 
-@app.route('/optimizacion_de_rutas')
-def optimizacion_de_rutas():
-    """Página de optimización de rutas."""
-    return render_template('Optimizacion-de-rutas.html')
+@app.route('/optimizacion_de_rutas/<valor1>')
+@app.route('/optimizacion_de_rutas/<valor1>/<valor2>')
+def optimizacion_de_rutas(valor1, valor2=None):
+    valor_bool1 = valor1.lower() == 'true'
+    if valor2 is None:
+        valor_bool2 = False
+    else:
+        valor_bool2 = valor2.lower() == 'true'
+    return render_template('Optimizacion-de-rutas.html', valor_1=valor_bool1, valor_2=valor_bool2)
 
 @app.route('/gestion_de_vehiculos')
 def gestion_de_vehiculos():
@@ -240,7 +245,7 @@ def comprobar_usuario():
             flash('Usuario o contraseña incorrectos', 'danger')
             return redirect(url_for('comprobar_usuario'))
 
-    return render_template('comprovar.html')
+    return render_template('proveedores/comprovar.html')
 
 @app.route('/cerrar_sesion')
 def cerrar_sesion():
@@ -259,7 +264,7 @@ def proveedor():
     Solo accesible para usuarios autenticados.
     """
     empresarios = proveedores.query.all()
-    return render_template('Proveedores.html', empresarios=empresarios)
+    return render_template('proveedores/Proveedores.html', empresarios=empresarios)
 
 @app.route('/añadir_proveedor', methods=['GET', 'POST'])
 @login_required
@@ -298,7 +303,7 @@ def añadir_proveedor():
             correo_error(e)
             flash('Error al añadir el proveedor, verifique los datos.', 'danger')
             return redirect(url_for('proveedor'))
-    return render_template('Añadir-proveedor.html')
+    return render_template('proveedores/Añadir-proveedor.html')
 
 @app.route('/editar_proveedor/<int:proveedor_id>', methods=['GET', 'POST'])
 @login_required
@@ -328,7 +333,7 @@ def editar_proveedor(proveedor_id):
             correo_error(e)
             flash('Error al actualizar el proveedor, verifique los datos.', 'danger')
             return redirect(url_for('proveedor'))
-    return render_template('Editar-proveedor.html', proveedor=proveedor)
+    return render_template('proveedores/Editar-proveedor.html', proveedor=proveedor)
 
 @app.route('/eliminar_proveedor/<int:proveedor_id>', methods=['POST'])
 @login_required
@@ -371,7 +376,7 @@ def IA():
     Página principal de la sección de IA.
     Solo accesible para usuarios autenticados.
     """
-    return render_template('IA.html')
+    return render_template('proveedores/IA.html')
 
 @app.route('/IA/consultar', methods=['POST'])
 def IA_consultar():
@@ -455,7 +460,7 @@ def IA_consultar():
                 "Todo el texto principal debe ir dentro de elementos <p>. "
                 "Resalta información importante usando <b>, <i>, <u>, <mark> y otros elementos HTML según corresponda. "
                 "Puedes usar la etiqueta <hr> para separar secciones de informacion si lo ves presiso. "
-                """Si mencionas recursos externos o información de internet, incluye enlaces usando la etiqueta <a target="_blank" rel="noopener noreferrer nofollow"> para que el usuario pueda ampliar la información. """
+                "Si mencionas recursos externos o información de internet, incluye enlaces usando la etiqueta <a target=\"_blank\" rel=\"noopener noreferrer nofollow\"> para que el usuario pueda ampliar la información. "
                 "No incluyas la estructura completa de HTML (no uses <html>, <head>, <body>), solo el contenido necesario para insertar en una plantilla web. "
                 "Si el usuario pregunta por proveedores, utiliza la siguiente información de la base de datos para dar una respuesta precisa y personalizada: "
                 f"{informacion} "

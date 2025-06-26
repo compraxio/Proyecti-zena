@@ -4,8 +4,19 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Optimizacion-de-rutas.css') }}">
 {% endblock %}
 {% block content %}
-<main class="main-section">
-    <h2>Optimización de Rutas</h2>
-    <p>Sección dedicada a la optimización de rutas de entrega.</p>
-</main>
+    {% if valor_1 %}
+        <main class="select">
+            <a href="{{url_for('optimizacion_de_rutas', valor1='false', valor2='true')}}" class="select__option">Solo 2 rutas</a>
+            <a href="{{url_for('optimizacion_de_rutas', valor1='false', valor2='false')}}" class="select__option">Mas de 2 rutas sin retorno</a>
+            <a href="{{url_for('optimizacion_de_rutas', valor1='true', valor2='false')}}" class="select__option">Mas de 2 rutas con retorno</a>
+        </main>
+    {% elif valor_2 %}
+        <main class="select">
+            <form action="" method="post">
+                <label for="ruta_primera" class="select__label">Ruta 1:</label>
+                <input type="text" name="ruta_primera" id="ruta_primera" placeholder="Ingrese la primera ruta" required class="select__option select--input">
+                <input type="submit" value="Enviar" class="select__option select--submit">
+            </form>
+        </main>
+    {% endif %}
 {% endblock %}

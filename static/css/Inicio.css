@@ -16,6 +16,9 @@ NAVBAR - Barra de navegación
 .nav-bar {
     width: 100%;
     background: none;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .nav-content {

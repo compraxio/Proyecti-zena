@@ -49,7 +49,7 @@
 {% for proveedor in empresarios %}
 <div class="proveedor-card">
     <h2>{{ proveedor.identificacion }}</h2>
-    <img src="{{ url_for('imagen_proveedor', proveedor_id=proveedor.id) }}" alt="{{ proveedor.identificacion }}" class="proveedor-image">
+    <img src="{{ url_for('imagen_proveedor', proveedor_id=proveedor.id) }}" alt="{{ proveedor.identificacion }}" class="proveedor-image" loading="lazy">
     <p class="proveedor-info"><strong>Contacto:</strong> {{ proveedor.contacto | replace('\n', '<br>') | safe }}</p>
     <p class="proveedor-info"><strong>Ubicacion:</strong> {{ proveedor.ubicacion | replace('\n', '<br>') | safe }}</p>
     <div class="proveedor-mapa">

@@ -16,8 +16,8 @@
         </div>
     {% endif %}
 {% endwith %}
-<main class="main-info">
-    <section class="intro-section">
+<header class="main-info">
+    <nav class="intro-section">
         <h2>Introducción</h2>
         <p class="intro-text">En el ámbito logístico, la gestión eficiente de almacenamiento, transporte y distribución es fundamental para garantizar la competitividad y el cumplimiento de los estándares de calidad y seguridad. Este proyecto surge como respuesta a la necesidad de optimizar estos procesos mediante una plataforma web integral, diseñada para centralizar y automatizar las operaciones logísticas, desde el control de inventarios hasta la evaluación de proveedores.
             La plataforma propuesta integra herramientas estratégicas como:</p>
@@ -44,7 +44,7 @@
             </ul>
             <ul class="features-list">
                 <li>
-                    <a href="{{ url_for('optimizacion_de_rutas') }}" rel="noopener noreferrer nofollow">
+                    <a href="{{ url_for('optimizacion_de_rutas', valor1='true') }}" rel="noopener noreferrer nofollow">
                         <img src="{{ url_for('static', filename='img/envio-rapido.png') }}" alt="Optimización de rutas de entrega" class="feature-icon">
                         <span>Optimización de Rutas</span>
                     </a>
@@ -63,34 +63,34 @@
                 </li>
             </ul>
             <p class="intro-text">Además, se incorporan módulos educativos y sistemas de registro automatizado para garantizar trazabilidad y cumplimiento normativo. Con esta solución, no solo se busca simplificar la operación logística, sino también fomentar una cultura de prevención, eficiencia y toma de decisiones basada en datos.</p>
-        </section>
+        </nav>
         <!-- Sección de creadores del proyecto -->
-        <section class="creators-section">
+        <nav class="creators-section">
             <h2 class="creators-title">Creadores</h2>
             <div class="creators-list">
                 <div class="creator-card">
-                    <img src="{{ url_for('static', filename='img/1Camila.jpg') }}" alt="Foto de Camila" class="creator-photo">
+                    <img src="{{ url_for('static', filename='img/1Camila.jpg') }}" alt="Foto de Camila" class="creator-photo" loading="lazy">
                     <h3 class="creator-name">Camila Andrea Lambis Figueroa</h3>
                 </div>
                 <div class="creator-card">
-                    <img src="{{ url_for('static', filename='img/2Isabel.jpg') }}" alt="Foto de Isabel" class="creator-photo">
+                    <img src="{{ url_for('static', filename='img/2Isabel.jpg') }}" alt="Foto de Isabel" class="creator-photo" loading="lazy">
                     <h3 class="creator-name">Isabel Sofia Lambis Figueroa</h3>
                 </div>
                 <div class="creator-card">
-                    <img src="{{ url_for('static', filename='img/3Johan.jpeg') }}" alt="Foto de Johan" class="creator-photo">
+                    <img src="{{ url_for('static', filename='img/3Johan.jpeg') }}" alt="Foto de Johan" class="creator-photo" loading="lazy">
                     <h3 class="creator-name">Johan David Marrugo Marrugo</h3>
                 </div>
                 <div class="creator-card">
-                    <img src="{{ url_for('static', filename='img/4Jose.jpeg') }}" alt="Foto de Jose" class="creator-photo">
+                    <img src="{{ url_for('static', filename='img/4Jose.jpeg') }}" alt="Foto de Jose" class="creator-photo" loading="lazy">
                     <h3 class="creator-name">Jose Alejandro Serrano Herrera</h3>
                 </div>
                 <div class="creator-card">
-                    <img src="{{ url_for('static', filename='img/5Luis.jpg') }}" alt="Foto de Luis" class="creator-photo">
+                    <img src="{{ url_for('static', filename='img/5Luis.jpg') }}" alt="Foto de Luis" class="creator-photo" loading="lazy">
                     <h3 class="creator-name">Luis Angel Acuña Cardeas</h3>
                 </div>
             </div>
-        </section>
-    </main>
+        </nav>
+    </header>
     <!-- ============================ -->
     <!-- Sección: Formulario de sugerencias -->
     <!-- ============================ -->
