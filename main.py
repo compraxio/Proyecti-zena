@@ -1,13 +1,21 @@
 # ============================================================
-# 1. IMPORTACIÓN DE LIBRERÍAS Y CONFIGURACIÓN INICIAL
+# main.py - Aplicación principal Flask para gestión logística
+# ============================================================
+# Autor: Luis Angel
+# Descripción: Plataforma web para gestión de proveedores, usuarios,
+# rutas, inteligencia artificial y utilidades logísticas.
 # ============================================================
 
-#librerias para ruta
+# ============================================================
+# 1. IMPORTACIÓN DE LIBRERÍAS Y SERVICIOS
+# ============================================================
+
+# --- Librerías de rutas y mapas ---
 import osmnx as ox
 import networkx as nx
 import matplotlib.pyplot as plt
 from geopy.distance import great_circle
-import folium  # <- NUEVO
+import folium
 import time
 from networkx.algorithms import approximation as approx
 import gpxpy
@@ -16,31 +24,30 @@ import geopandas as gpd
 import csv
 from pathlib import Path
 
-# Librerías de Google Gemini y SerpApi para IA y búsquedas web
+# --- Librerías de IA y búsqueda ---
 from google import genai
 from google.genai import types
-from google.genai.types import  Tool, GenerateContentConfig, GoogleSearch
+from google.genai.types import Tool, GenerateContentConfig, GoogleSearch
 from serpapi import GoogleSearch as Gg
 
-# Librerías de Flask para la creación de la aplicación web y manejo de peticiones
-from flask import Flask, render_template, url_for, request, flash, redirect, send_file, session, jsonify, Response
-
-# SQLAlchemy para ORM y manejo de base de datos SQLite
+# --- Librerías de Flask y extensiones ---
+from flask import (
+    Flask, render_template, url_for, request, flash, redirect,
+    send_file, session, jsonify, Response
+)
 from flask_sqlalchemy import SQLAlchemy
-
-# Flask-Mail para envío de correos electrónicos
 from flask_mail import Mail, Message
 
-# Werkzeug para manejo seguro de contraseñas
+# --- Seguridad y utilidades ---
 from werkzeug.security import generate_password_hash, check_password_hash
 import pyotp
 import qrcode
-# Función wraps para crear decoradores personalizados
 from functools import wraps
-
-# Librería estándar para manejo de archivos binarios
 import io
+import json
 
+
+# --- Servicios personalizados ---
 from services.correo import correo_error, qr
 from services.Ruta import *
 
@@ -48,34 +55,25 @@ from services.Ruta import *
 # 2. CONFIGURACIÓN DE LA APLICACIÓN Y EXTENSIONES
 # ============================================================
 
-# Inicialización de la aplicación Flask
 app = Flask(__name__)
 
-#qr("correo","nombre de aplicacion")
-
-# Cliente de Google Gemini para IA (requiere API Key)
+# --- Configuración de claves y clientes externos ---
 client = genai.Client(api_key="AIzaSyBGxDkqcairULlOIvMycALEvclJn3-e-_o")
-#Key de api google
 Clav = "AIzaSyBi_IAVJo42jH0ziRi72nO5XrU9DM7dFcE"
+key = "c4ea6b07cbade43b7a7c7955016ffc9463975b858b0ccb50863bdc57e40bf1c8"  # SerpApi
 
-
-# Configuración de la base de datos SQLite
+# --- Configuración de base de datos ---
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///web.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Configuración de la API de SerpApi para búsquedas en Google
-key = "c4ea6b07cbade43b7a7c7955016ffc9463975b858b0ccb50863bdc57e40bf1c8"  # Clave de API de SerpApi
-
-# Clave secreta para sesiones y mensajes flash
+# --- Configuración de seguridad y correo ---
 app.secret_key = 'a94a8fe5cc5c2b0e5d8cb6e00392e5ed5557788983e1f915d2cdf697ec811b17'
-
-# Configuración de Flask-Mail para envío de correos electrónicos
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'luisangelacu10@gmail.com'
-app.config['MAIL_PASSWORD'] = 'udjv nbdw qkxd hddf'  # Contraseña de aplicación de Gmail
+app.config['MAIL_PASSWORD'] = 'udjv nbdw qkxd hddf'
 mail = Mail(app)
 
 # ============================================================
@@ -112,7 +110,7 @@ with app.app_context():
     db.create_all()
 
 # ============================================================
-# 4. RUTAS PRINCIPALES DE LA APLICACIÓN
+# 4. DECORADORES Y UTILIDADES DE AUTENTICACIÓN
 # ============================================================
 
 def login_required(f):
@@ -128,23 +126,22 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# ---------------------------
-# Página de inicio y envío de correo
-# ---------------------------
+# ============================================================
+# 5. RUTAS PRINCIPALES Y DE NAVEGACIÓN
+# ============================================================
 
+# --- Registro de usuario con TOTP ---
 @app.route('/usuario/<key>', methods=['GET', 'POST'])
 def usuario(key):
-    
     SECRET_TOTP = "MILH6SJUVAPI6UFEDZ633CTNPRVJULV5"
     totp = pyotp.TOTP(SECRET_TOTP)
-    
     if totp.verify(str(key), valid_window=1):
         try:
             if request.method == 'POST':
                 user = Usuarios(
-                    Usuario = request.form['User'],
-                    correo = request.form['Email'],
-                    contraseña = generate_password_hash(request.form['Pas'])
+                    Usuario = request.form.get('User'),
+                    correo = request.form.get('Email'),
+                    contraseña = generate_password_hash(request.form.get('Pas'))
                 )
                 db.session.add(user)
                 db.session.commit()
@@ -159,6 +156,7 @@ def usuario(key):
         flash('Código inválido o expirado.', 'danger')
         return redirect(url_for('index'))
 
+# --- Página de inicio y formulario de contacto ---
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @app.route('/inicio', methods=['GET', 'POST'])
@@ -168,9 +166,9 @@ def index():
     Si el método es POST, procesa el formulario y envía un correo.
     """
     if request.method == 'POST':
-        nombre = request.form['nombre']
-        correo = request.form['correo']
-        mensaje = request.form['Mensage']
+        nombre = request.form.get('nombre')
+        correo = request.form.get('correo')
+        mensaje = request.form.get('Mensage')
         try:
             msg = Message(
                 "Nuevo mensaje del proyecto",
@@ -188,10 +186,7 @@ def index():
             return redirect(url_for('index'))
     return render_template('Inicio.html')
 
-# ---------------------------
-# Rutas de navegación a otras secciones
-# ---------------------------
-
+# --- Navegación a otras secciones ---
 @app.route('/prevencion_de_riesgos')
 def prevencion_de_riesgos():
     """Página de prevención de riesgos."""
@@ -207,23 +202,46 @@ def control_de_inventario():
     """Página de control de inventario."""
     return render_template('Control-de-inventario.html')
 
-@app.route('/optimizacion_de_rutas/<valor1>')
-@app.route('/optimizacion_de_rutas/<valor1>/<valor2>')
-def optimizacion_de_rutas(valor1, valor2=None):
-    valor_bool1 = valor1.lower() == 'true'
-    if valor2 is None:
-        valor_bool2 = False
-    else:
-        valor_bool2 = valor2.lower() == 'true'
-    return render_template('Optimizacion-de-rutas.html', valor_1=valor_bool1, valor_2=valor_bool2)
+@app.route('/optimizacion_de_rutas/<valor1>', methods=['GET', 'POST'])
+@app.route('/optimizacion_de_rutas/<valor1>/<valor2>', methods=['GET', 'POST'])
+@app.route('/optimizacion_de_rutas/<valor1>/<valor2>/<valor3>/<name_region>', methods=['GET', 'POST'])
+@app.route('/optimizacion_de_rutas/<valor1>/<valor2>/<valor3>/<name_region>/<valor4>/<info>', methods=['GET', 'POST'])
+def optimizacion_de_rutas(valor1, valor2=None, valor3=None, name_region=None, valor4=None, info=None):
+    paises = []
+    with open('services/Paises.json', encoding='utf-8') as f:
+        dato = json.load(f)
+    for pais in dato:
+        paises.append(pais['countryName'])
 
+    valor_bool1 = valor1.lower() == 'true'
+    valor_bool2 = valor2.lower() == 'true' if valor2 is not None else False
+    valor_bool3 = valor3.lower() == 'true' if valor3 is not None else False
+    valor_bool4 = valor4.lower() == 'true' if valor4 is not None else False
+
+    if valor_bool2:
+        if request.method == 'POST':
+            pais = request.form.get("pais1")
+            # Redirige al siguiente paso con el país seleccionado como name_region
+            return redirect(url_for('optimizacion_de_rutas', valor1="false", valor2="false", valor3='true', name_region=pais))
+        return render_template('Optimizacion-de-rutas.html', paises=paises, valor_1=valor_bool1, valor_2=valor_bool2, valor_3=valor_bool3, valor_4=valor_bool4, info=info)
+    elif valor_bool3:
+        if request.method == 'POST':
+            Ruta = []
+            inicio = obtener_coordenadas(request.form.get("destino1"))
+            destino = obtener_coordenadas(request.form.get("destino2"))
+            Ruta.append((inicio, destino))
+            info = ruta(name_region, Ruta, mode = "drive", simple=True)
+            return redirect(url_for('optimizacion_de_rutas', valor1=False, valor2=False, valor3=False, name_region=name_region, valor4=True, info=info))
+        return render_template('Optimizacion-de-rutas.html', paises=paises, valor_1=valor_bool1, valor_2=valor_bool2, valor_3=valor_bool3, valor_4=valor_bool4, info=info)
+    else:
+        return render_template('Optimizacion-de-rutas.html', paises=paises, valor_1=valor_bool1, valor_2=valor_bool2, valor_3=valor_bool3, valor_4=valor_bool4, info=info)
 @app.route('/gestion_de_vehiculos')
 def gestion_de_vehiculos():
     """Página de gestión de vehículos."""
     return render_template('Gestion-de-vehiculos.html')
 
 # ============================================================
-# 5. RUTAS PARA GESTIÓN DE PROVEEDORES Y USUARIOS
+# 6. AUTENTICACIÓN Y GESTIÓN DE USUARIOS
 # ============================================================
 
 @app.route('/comprobar_usuario', methods=['GET', 'POST'])
@@ -233,10 +251,9 @@ def comprobar_usuario():
     Verifica usuario, correo y contraseña. Si es correcto, inicia sesión.
     """
     if request.method == 'POST':
-        User = request.form['usuario']
-        corre = request.form['correo']
-        contra = request.form['password']
-        
+        User = request.form.get('usuario')
+        corre = request.form.get('correo')
+        contra = request.form.get('password')
         permitido = Usuarios.query.filter_by(Usuario=User, correo=corre).first()
         if permitido and check_password_hash(permitido.contraseña, contra):
             session['usuario'] = permitido.Usuario
@@ -244,7 +261,6 @@ def comprobar_usuario():
         else:
             flash('Usuario o contraseña incorrectos', 'danger')
             return redirect(url_for('comprobar_usuario'))
-
     return render_template('proveedores/comprovar.html')
 
 @app.route('/cerrar_sesion')
@@ -255,6 +271,10 @@ def cerrar_sesion():
     session.pop('usuario', None)
     flash('Sesión cerrada correctamente.', 'success')
     return redirect(url_for('comprobar_usuario'))
+
+# ============================================================
+# 7. CRUD DE PROVEEDORES
+# ============================================================
 
 @app.route('/proveedor')
 @login_required
@@ -276,13 +296,13 @@ def añadir_proveedor():
     if request.method == 'POST':
         imagen_file = request.files['imagen']
         imagen = imagen_file.read() if imagen_file else None
-        proveedor = request.form['proveedor']
-        Contacto = request.form['Contacto']
-        Ubicacion = request.form['Ubicacion']
-        Condicion = request.form['Condicion']
-        ofrece = request.form['ofrece']
-        Precio = request.form['Precio']
-        tiempo = request.form['tiempo']
+        proveedor = request.form.get('proveedor')
+        Contacto = request.form.get('Contacto')
+        Ubicacion = request.form.get('Ubicacion')
+        Condicion = request.form.get('Condicion')
+        ofrece = request.form.get('ofrece')
+        Precio = request.form.get('Precio')
+        tiempo = request.form.get('tiempo')
         try:
             NuevoProveedor = proveedores(
                 identificacion=proveedor,
@@ -315,13 +335,13 @@ def editar_proveedor(proveedor_id):
     proveedor = proveedores.query.get_or_404(proveedor_id)
     if request.method == 'POST':
         imagen_file = request.files['imagen']
-        proveedor.identificacion = request.form['proveedor']
-        proveedor.contacto = request.form['Contacto']
-        proveedor.ubicacion = request.form['Ubicacion']
-        proveedor.condiciones_de_pago = request.form['Condicion']
-        proveedor.ofrece = request.form['ofrece']
-        proveedor.precio = request.form['Precio']
-        proveedor.tiempo_de_entrega = request.form['tiempo']
+        proveedor.identificacion = request.form.get('proveedor')
+        proveedor.contacto = request.form.get('Contacto')
+        proveedor.ubicacion = request.form.get('Ubicacion')
+        proveedor.condiciones_de_pago = request.form.get('Condicion')
+        proveedor.ofrece = request.form.get('ofrece')
+        proveedor.precio = request.form.get('Precio')
+        proveedor.tiempo_de_entrega = request.form.get('tiempo')
         if imagen_file and imagen_file.filename:
             proveedor.imagen = imagen_file.read()
         try:
@@ -366,7 +386,7 @@ def imagen_proveedor(proveedor_id):
         return redirect(url_for('static', filename='img/proveedor-alternativo.png'))
 
 # ============================================================
-# 6. RUTAS DE INTELIGENCIA ARTIFICIAL (IA)
+# 8. INTELIGENCIA ARTIFICIAL (IA)
 # ============================================================
 
 @app.route('/IA')
@@ -380,22 +400,6 @@ def IA():
 
 @app.route('/IA/consultar', methods=['POST'])
 def IA_consultar():
-    pregunta = request.json.get('question')
-    data = request.get_json()
-    wifi = data.get('wifi')
-    
-    # 1. Obtener la pregunta enviada por el usuario (JSON)
-    busco = ""
-    resultado = ""
-    # 2. Parámetros para la búsqueda en Google (SerpApi)
-    params = {
-        "q": pregunta,
-        "location": "Mexico",
-        "hl": "es",
-        "gl": "mx",
-        "google_domain": "google.com.mx",
-        "api_key": key  # Usa tu variable de clave de SerpApi
-    }
     """
     Ruta para consultar la IA.
     1. Recibe una pregunta del usuario.
@@ -405,9 +409,20 @@ def IA_consultar():
     5. Llama al modelo de IA de Google Gemini para generar una respuesta personalizada.
     6. Devuelve la respuesta en formato JSON.
     """
-    #cuando esta apagado envia true, entonces para no complicarme. cuando esta en false haga algo
+    pregunta = request.json.get('question')
+    data = request.get_json()
+    wifi = data.get('wifi')
+    busco = ""
+    resultado = ""
+    params = {
+        "q": pregunta,
+        "location": "Mexico",
+        "hl": "es",
+        "gl": "mx",
+        "google_domain": "google.com.mx",
+        "api_key": key
+    }
     if wifi is False:
-        # 3. Realizar la búsqueda en Google usando SerpApi
         try:
             search = Gg(params)
             result = search.get_dict()
@@ -415,9 +430,7 @@ def IA_consultar():
             correo_error(e)
             resultado = "Error en la búsqueda."
         else:
-            # 4. Extraer preguntas relacionadas del resultado
             Contenido = result.get("related_questions", [])
-            # 5. Construir una cadena con las preguntas y respuestas encontradas
             for solicitud in Contenido:
                 snippet = solicitud.get('snippet')
                 lista = solicitud.get('list')
@@ -425,10 +438,8 @@ def IA_consultar():
                 busco += f"Respuesta: {respuesta}\n, link: {solicitud.get('link','')}\n"
             resultado = busco
     else:
-        # 3. Si wifi es True, no realiza búsqueda y usa un mensaje predeterminado
         resultado = "El usuario no ha pedido búsqueda en intent."
 
-    # 8. Obtener información de proveedores de la base de datos
     tools = []
     tools.append(Tool(url_context=types.UrlContext))
     tools.append(Tool(google_search=types.GoogleSearch))
@@ -444,7 +455,6 @@ def IA_consultar():
             f"tiempo_de_entrega: {empresario.tiempo_de_entrega}\n"
         )
 
-    # 9. Llamar al modelo de IA de Google Gemini para generar una respuesta
     response = client.models.generate_content_stream(
         model="gemini-2.5-flash-preview-05-20",
         contents=[pregunta],
@@ -477,7 +487,6 @@ def IA_consultar():
         ),
     )
     try:
-        # 10. Devolver la respuesta generada por la IA en formato JSON
         def generar():
             try:
                 for chunk in response:
@@ -495,7 +504,7 @@ def IA_consultar():
         return jsonify({"answer": "No se pudo generar una respuesta en este momento. Inténtalo más tarde."})
 
 # ============================================================
-# 7. EJECUCIÓN DE LA APLICACIÓN
+# 9. EJECUCIÓN DE LA APLICACIÓN
 # ============================================================
 
 if __name__ == '__main__':

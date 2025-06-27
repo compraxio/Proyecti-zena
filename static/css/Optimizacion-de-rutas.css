@@ -123,3 +123,49 @@ NAVBAR - Barra de navegación
     color: white;
     box-shadow: 0 0 20px #2CDE9A;
 }
+
+.select__input, .select_submit {
+    display: block;
+    color: #2CDE9A;
+    margin: auto;
+    margin-bottom: 10px;
+}
+.select__title {
+    color: #2CDE9A;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 0 0 2px #2CDE9A;
+    margin-bottom: 10px;
+}
+
+.select__input {
+    text-align: center;
+    width: 100%;
+    min-width: 50%;
+    padding: 10px;
+    color: #2CDE9A;
+    font-size: 14px;
+    border: none;
+    background-color: transparent;
+    border-bottom: 2px solid #2CDE9A;
+    border-radius: 30px;
+}
+
+.select_submit {
+    text-align: center;
+    box-shadow: 0 0 10px #2CDE9A;
+    width: 50%;
+    padding: 10px 20px;
+    color: #244757;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    background-color: #2CDE9A;
+    transition: width 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.select_submit:hover {
+    width: 150px;
+    color: white;
+    box-shadow: 0 0 20px #2CDE9A;
+}

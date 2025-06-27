@@ -11,6 +11,7 @@ import gpxpy.gpx
 import geopandas as gpd
 import csv
 from pathlib import Path
+import json
 #Token de locationiq
 locationiq = "pk.d81a2970f82d6294a9d04107082be838"
 #Token de POIs
@@ -216,7 +217,14 @@ def ruta (place, coordenadas, mode = "drive", simple =False, soloIdaTiempo = Fal
     }
 
 #lat, lon = obtener_coordenadas("Carretera Turbaco - Arjona, Turbaco, Bolívar, Caribe, Colombia")
-
+def regiones (ID):
+    URL = f"https://secure.geonames.org/childrenJSON?geonameId={ID}&username=compracio"
+    respuesta = requests.get(URL)
+    regiones = respuesta.json()['geonames']
+    re = []
+    for region in regiones:
+        re.append((region['name'], region['geonameId']))
+    return re
 
 #info2, encontrados = sugerencias(lon, lat)
 #print(f"Total de POIs encontrados: {encontrados}")

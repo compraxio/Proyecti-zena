@@ -1,0 +1,546 @@
+[
+    {
+        "countryName": "Andorra",
+        "geonameId": 3041565
+    },
+    {
+        "countryName": "Emiratos Árabes Unidos",
+        "geonameId": 290557
+    },
+    {
+        "countryName": "Afganistán",
+        "geonameId": 1149361
+    },
+    {
+        "countryName": "Antigua y Barbuda",
+        "geonameId": 3576396
+    },
+    {
+        "countryName": "Anguila",
+        "geonameId": 3573511
+    },
+    {
+        "countryName": "Albania",
+        "geonameId": 783754
+    },
+    {
+        "countryName": "Armenia",
+        "geonameId": 174982
+    },
+    {
+        "countryName": "Angola",
+        "geonameId": 3351879
+    },
+    {
+        "countryName": "Antártida",
+        "geonameId": 6697173
+    },
+    {
+        "countryName": "Argentina",
+        "geonameId": 3865483
+    },
+    {
+        "countryName": "Samoa Americana",
+        "geonameId": 5880801
+    },
+    {
+        "countryName": "Austria",
+        "geonameId": 2782113
+    },
+    {
+        "countryName": "Australia",
+        "geonameId": 2077456
+    },
+    {
+        "countryName": "Aruba",
+        "geonameId": 3577279
+    },
+    {
+        "countryName": "Åland",
+        "geonameId": 661882
+    },
+    {
+        "countryName": "Azerbaiyán",
+        "geonameId": 587116
+    },
+    {
+        "countryName": "Bosnia y Herzegovina",
+        "geonameId": 3277605
+    },
+    {
+        "countryName": "Barbados",
+        "geonameId": 3374084
+    },
+    {
+        "countryName": "Bangladesh",
+        "geonameId": 1210997
+    },
+    {
+        "countryName": "Bélgica",
+        "geonameId": 2802361
+    },
+    {
+        "countryName": "Burkina Faso",
+        "geonameId": 2361809
+    },
+    {
+        "countryName": "Bulgaria",
+        "geonameId": 732800
+    },
+    {
+        "countryName": "Baréin",
+        "geonameId": 290291
+    },
+    {
+        "countryName": "Burundi",
+        "geonameId": 433561
+    },
+    {
+        "countryName": "Benín",
+        "geonameId": 2395170
+    },
+    {
+        "countryName": "San Bartolomé",
+        "geonameId": 3578476
+    },
+    {
+        "countryName": "Bermudas",
+        "geonameId": 3573345
+    },
+    {
+        "countryName": "Brunéi",
+        "geonameId": 1820814
+    },
+    {
+        "countryName": "Bolivia",
+        "geonameId": 3923057
+    },
+    {
+        "countryName": "Bonaire, Sint Eustatius y Saba",
+        "geonameId": 7626844
+    },
+    {
+        "countryName": "Brasil",
+        "geonameId": 3469034
+    },
+    {
+        "countryName": "Bahamas",
+        "geonameId": 3572887
+    },
+    {
+        "countryName": "Bhután",
+        "geonameId": 1252634
+    },
+    {
+        "countryName": "Bouvet Island",
+        "geonameId": 3371123
+    },
+    {
+        "countryName": "Botsuana",
+        "geonameId": 933860
+    },
+    {
+        "countryName": "Bielorrusia",
+        "geonameId": 630336
+    },
+    {
+        "countryName": "Belice",
+        "geonameId": 3582678
+    },
+    {
+        "countryName": "Canadá",
+        "geonameId": 6251999
+    },
+    {
+        "countryName": "Islas Cocos (Keeling)",
+        "geonameId": 1547376
+    },
+    {
+        "countryName": "República Democrática del Congo",
+        "geonameId": 203312
+    },
+    {
+        "countryName": "República Centroafricana",
+        "geonameId": 239880
+    },
+    {
+        "countryName": "Congo",
+        "geonameId": 2260494
+    },
+    {
+        "countryName": "Suiza",
+        "geonameId": 2658434
+    },
+    {
+        "countryName": "Costa de Marfil",
+        "geonameId": 2287781
+    },
+    {
+        "countryName": "Islas Cook",
+        "geonameId": 1899402
+    },
+    {
+        "countryName": "Chile",
+        "geonameId": 3895114
+    },
+    {
+        "countryName": "Camerún",
+        "geonameId": 2233387
+    },
+    {
+        "countryName": "China",
+        "geonameId": 1814991
+    },
+    {
+        "countryName": "Colombia",
+        "geonameId": 3686110
+    },
+    {
+        "countryName": "Costa Rica",
+        "geonameId": 3624060
+    },
+    {
+        "countryName": "Cuba",
+        "geonameId": 3562981
+    },
+    {
+        "countryName": "Cabo Verde",
+        "geonameId": 3374766
+    },
+    {
+        "countryName": "Curazao",
+        "geonameId": 7626836
+    },
+    {
+        "countryName": "Isla de Navidad",
+        "geonameId": 2078138
+    },
+    {
+        "countryName": "Chipre",
+        "geonameId": 146669
+    },
+    {
+        "countryName": "República Checa",
+        "geonameId": 3077311
+    },
+    {
+        "countryName": "Alemania",
+        "geonameId": 2921044
+    },
+    {
+        "countryName": "Yibuti",
+        "geonameId": 223816
+    },
+    {
+        "countryName": "Dinamarca",
+        "geonameId": 2623032
+    },
+    {
+        "countryName": "Dominica",
+        "geonameId": 3575830
+    },
+    {
+        "countryName": "República Dominicana",
+        "geonameId": 3508796
+    },
+    {
+        "countryName": "Argelia",
+        "geonameId": 2589581
+    },
+    {
+        "countryName": "Ecuador",
+        "geonameId": 3658394
+    },
+    {
+        "countryName": "Estonia",
+        "geonameId": 453733
+    },
+    {
+        "countryName": "Egipto",
+        "geonameId": 357994
+    },
+    {
+        "countryName": "Sahara Occidental",
+        "geonameId": 2461445
+    },
+    {
+        "countryName": "Eritrea",
+        "geonameId": 338010
+    },
+    {
+        "countryName": "España",
+        "geonameId": 2510769
+    },
+    {
+        "countryName": "Etiopía",
+        "geonameId": 337996
+    },
+    {
+        "countryName": "Finlandia",
+        "geonameId": 660013
+    },
+    {
+        "countryName": "Fiyi",
+        "geonameId": 2205218
+    },
+    {
+        "countryName": "Islas Malvinas",
+        "geonameId": 3474414
+    },
+    {
+        "countryName": "Micronesia",
+        "geonameId": 2081918
+    },
+    {
+        "countryName": "Islas Feroe",
+        "geonameId": 2622320
+    },
+    {
+        "countryName": "Francia",
+        "geonameId": 3017382
+    },
+    {
+        "countryName": "Gabón",
+        "geonameId": 2400553
+    },
+    {
+        "countryName": "Reino Unido",
+        "geonameId": 2635167
+    },
+    {
+        "countryName": "Granada",
+        "geonameId": 3580239
+    },
+    {
+        "countryName": "Georgia",
+        "geonameId": 614540
+    },
+    {
+        "countryName": "Guayana Francesa",
+        "geonameId": 3381670
+    },
+    {
+        "countryName": "Guernsey",
+        "geonameId": 3042362
+    },
+    {
+        "countryName": "Ghana",
+        "geonameId": 2300660
+    },
+    {
+        "countryName": "Gibraltar",
+        "geonameId": 2411586
+    },
+    {
+        "countryName": "Groenlandia",
+        "geonameId": 3425505
+    },
+    {
+        "countryName": "Gambia",
+        "geonameId": 2413451
+    },
+    {
+        "countryName": "Guinea",
+        "geonameId": 2420477
+    },
+    {
+        "countryName": "Guadalupe",
+        "geonameId": 3579143
+    },
+    {
+        "countryName": "Guinea Ecuatorial",
+        "geonameId": 2309096
+    },
+    {
+        "countryName": "Grecia",
+        "geonameId": 390903
+    },
+    {
+        "countryName": "San Marino",
+        "geonameId": 3168068
+    },
+    {
+        "countryName": "Senegal",
+        "geonameId": 2245662
+    },
+    {
+        "countryName": "Somalia",
+        "geonameId": 51537
+    },
+    {
+        "countryName": "Surinam",
+        "geonameId": 3382998
+    },
+    {
+        "countryName": "Sudán del Sur",
+        "geonameId": 7909807
+    },
+    {
+        "countryName": "Santo Tomé y Príncipe",
+        "geonameId": 2410758
+    },
+    {
+        "countryName": "El Salvador",
+        "geonameId": 3585968
+    },
+    {
+        "countryName": "Sint Maarten",
+        "geonameId": 7609695
+    },
+    {
+        "countryName": "Siria",
+        "geonameId": 163843
+    },
+    {
+        "countryName": "Suazilandia",
+        "geonameId": 934841
+    },
+    {
+        "countryName": "Islas Turcas y Caicos",
+        "geonameId": 3576916
+    },
+    {
+        "countryName": "Chad",
+        "geonameId": 2434508
+    },
+    {
+        "countryName": "Territorios Australes Franceses",
+        "geonameId": 1546748
+    },
+    {
+        "countryName": "Togo",
+        "geonameId": 2363686
+    },
+    {
+        "countryName": "Tailandia",
+        "geonameId": 1605651
+    },
+    {
+        "countryName": "Tayikistán",
+        "geonameId": 1220409
+    },
+    {
+        "countryName": "Tokelau",
+        "geonameId": 4031074
+    },
+    {
+        "countryName": "Timor-Leste",
+        "geonameId": 1966436
+    },
+    {
+        "countryName": "Turkmenistán",
+        "geonameId": 1218197
+    },
+    {
+        "countryName": "Túnez",
+        "geonameId": 2464461
+    },
+    {
+        "countryName": "Tonga",
+        "geonameId": 4032283
+    },
+    {
+        "countryName": "Turquía",
+        "geonameId": 298795
+    },
+    {
+        "countryName": "Trinidad y Tobago",
+        "geonameId": 3573591
+    },
+    {
+        "countryName": "Tuvalu",
+        "geonameId": 2110297
+    },
+    {
+        "countryName": "Taiwán",
+        "geonameId": 1668284
+    },
+    {
+        "countryName": "Tanzania",
+        "geonameId": 149590
+    },
+    {
+        "countryName": "Ucrania",
+        "geonameId": 690791
+    },
+    {
+        "countryName": "Uganda",
+        "geonameId": 226074
+    },
+    {
+        "countryName": "Islas Ultramarinas de EE. UU.",
+        "geonameId": 5854968
+    },
+    {
+        "countryName": "Estados Unidos",
+        "geonameId": 6252001
+    },
+    {
+        "countryName": "Uruguay",
+        "geonameId": 3439705
+    },
+    {
+        "countryName": "Uzbekistán",
+        "geonameId": 1512440
+    },
+    {
+        "countryName": "Vaticano",
+        "geonameId": 3164670
+    },
+    {
+        "countryName": "San Vicente y las Granadinas",
+        "geonameId": 3577815
+    },
+    {
+        "countryName": "Venezuela",
+        "geonameId": 3625428
+    },
+    {
+        "countryName": "Islas Vírgenes Británicas",
+        "geonameId": 3577718
+    },
+    {
+        "countryName": "Islas Vírgenes de los EE. UU.",
+        "geonameId": 4796775
+    },
+    {
+        "countryName": "Vietnam",
+        "geonameId": 1562822
+    },
+    {
+        "countryName": "Vanuatu",
+        "geonameId": 2134431
+    },
+    {
+        "countryName": "Wallis y Futuna",
+        "geonameId": 4034749
+    },
+    {
+        "countryName": "Samoa",
+        "geonameId": 4034894
+    },
+    {
+        "countryName": "Kosovo",
+        "geonameId": 831053
+    },
+    {
+        "countryName": "Yemen",
+        "geonameId": 69543
+    },
+    {
+        "countryName": "Mayotte",
+        "geonameId": 1024031
+    },
+    {
+        "countryName": "Sudáfrica",
+        "geonameId": 953987
+    },
+    {
+        "countryName": "Zambia",
+        "geonameId": 895949
+    },
+    {
+        "countryName": "Zimbabue",
+        "geonameId": 878675
+    }
+]

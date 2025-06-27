@@ -12,11 +12,37 @@
         </main>
     {% elif valor_2 %}
         <main class="select">
-            <form action="" method="post">
-                <label for="ruta_primera" class="select__label">Ruta 1:</label>
-                <input type="text" name="ruta_primera" id="ruta_primera" placeholder="Ingrese la primera ruta" required class="select__option select--input">
-                <input type="submit" value="Enviar" class="select__option select--submit">
+            <form method="post">
+                <h2 class="select__title">Escoge el pais</h2>
+                <input list="paises1" name="pais1" id="pais" placeholder="--Selecciona el pais--" required class="select__input">
+                <datalist id="paises1">
+                    {% for pais in paises %}
+                    <option value="{{ pais }}"></option>
+                    {% endfor %}
+                </datalist>
+                <input type="submit" value="Enviar" class="select_submit">
             </form>
         </main>
+    {% elif valor_3 %}
+    <main class="select">
+        <form method="post">
+            <h2 class="select__title">Añade las rutas</h2>
+            <input type="text" name="destino1" id="destino1" placeholder="Inicio" required class="select__input">
+            <input type="text" name="destino2" id="destino2" placeholder="Destino" required class="select__input">
+            <input type="submit" value="Enviar" class="select_submit">
+        </form>
+    </main>
+    {% elif valor_4 %}
+    <main class="select">
+        {% if info %}
+            <ul>
+                <li>Tiempo estimado: {{ info.tiempo_estimado }}</li>
+                <li>Distancia: {{ info.distancia_km }}</li>
+                <li>Nodos visitados: {{ info.nodos_visitados }}</li>
+                <li>Tipo de ruta: {{ info.tipo_ruta }}</li>
+            </ul>
+        {% endif %}
+    </main>
+
     {% endif %}
 {% endblock %}
