@@ -1,25 +1,20 @@
-import osmnx as ox
-import networkx as nx
-import matplotlib.pyplot as plt
-from geopy.distance import great_circle
-import folium  # <- NUEVO
 import requests
 import time
-from networkx.algorithms import approximation as approx
-import gpxpy
-import gpxpy.gpx
 import geopandas as gpd
 import csv
 from pathlib import Path
+import openrouteservice
+import folium
 import json
+import os
 #Token de locationiq
 locationiq = "pk.d81a2970f82d6294a9d04107082be838"
 #Token de POIs
 POIs = "5b3ce3597851110001cf6248c78a74e4d1fd423588a0378499a42c6d"
 
-def segundos_a_tiempo(segundos):
-    """Convierte segundos a formato: HH:MM:SS o Dd HH:MM:SS si hay días"""
-    segundos = int(round(segundos))
+def minutos_a_tiempo(Minutos):
+    """Convierte minutos a HHh MMm SSs"""
+    segundos = int(round(Minutos * 60))
     dias = segundos // 86400
     tiempo = time.strftime('%Hh %Mm %Ss', time.gmtime(segundos % 86400))
     return f"{dias}d {tiempo}" if dias > 0 else tiempo
@@ -31,7 +26,7 @@ def obtener_coordenadas(ciudad):
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()[0]
-        return float(data['lat']), float(data['lon'])
+        return float(data['lon']), float(data['lat'])
     else:
         return("Error al obtener las coordenadas", response.text)
         
@@ -81,151 +76,87 @@ def sugerencias(lon, lat, categoria = 596):
     else:
         print(f"Error {response.status_code}: {response.text}")
 
-def ruta (place, coordenadas, mode = "drive", simple =False, soloIdaTiempo = False, idaVeulta = False):
-    
-    ox.settings.log_console = True
-    ox.settings.use_cache = True
-    ox.settings.cache_folder = Path("./osmnx_cache")
-    
-    def cache (place, mode):
-        cache_file = f"{place}_{mode}.graphml"
-        cache_path = ox.settings.cache_folder / cache_file
+def ruta_logistica_simple(origen, destino, vehiculo, api_key, nombre_mapa="ruta_mapa.html", evitar=None, usar_elevacion=True, instrucciones=True):
+    """
+    Calcula una ruta logística simple entre dos coordenadas y genera un mapa interactivo.
+
+    Parámetros:
+    - origen:   [lon, lat] de inicio
+    - destino:  [lon, lat] de fin
+    - vehiculo: perfil de ORS (ej: 'driving-car', 'truck', 'cycling-regular')
+    - api_key:  tu clave de API de OpenRouteService
+    - nombre_mapa: nombre del archivo HTML que se generará
+
+    Retorna:
+    - distancia_km: distancia en kilómetros
+    - duracion_min: duración estimada en minutos
+    - mapa guardado como archivo HTML
+    """
+    client = openrouteservice.Client(key=api_key)
+
+# ↓ Ya no pongas esto ↓
+# opciones["profile_params"] = {
+#     "weightings": {
+#         "speed": {
+#             "type": "function",
+#             "value": [[0, 30], [1000000, 90]]
+#         }
+#     }
+# }
+    opciones = {}
+    if evitar:
+        opciones["avoid_features"] = evitar
         
-        if cache_path.exists():
-            print("✅ Grafo encontrado en caché. Cargando...")
-            return ox.load_graphml(cache_path)
-        else:
-            print("⏳ Descargando grafo (esto puede tomar unos segundos)...")
-            G = ox.graph_from_place(place, network_type=mode)
-            ox.save_graphml(G, filepath=cache_path)  # Guardar en caché
-            return G
-    
-    def actualizar_grafo(ciudad, modo_transporte, fuerza_redescarga=False):
-        if fuerza_redescarga:
-            p = ox.settings.cache_folder / f"{ciudad}_{modo_transporte}.graphml"
-            if p.exists(): p.unlink()
-        return cache(ciudad, modo_transporte)
-    
-    def agregar_pesos_velocidad(G):
-        """Añade 'speed_kph' y 'travel_time' (s) a cada arista"""
-        G = ox.add_edge_speeds(G)
-        G = ox.add_edge_travel_times(G)
-        return G
-    
-    def get_shortest_path(G, origen, destino, peso='travel_time'):
-        """Camino más rápido entre dos nodos usando 'travel_time'"""
-        return nx.shortest_path(G, source=origen, target=destino, weight=peso)
-    
-    def resolver_tsp_velocidad(G, nodos, ciclo=True):
-        """TSP por menor tiempo de viaje ('travel_time')"""
-        # 1. Construir grafo métrico entre nodos clave
-        metric_G = nx.Graph()
-        for i in range(len(nodos)):
-            for j in range(i+1, len(nodos)):
-                u, v = nodos[i], nodos[j]
-                try:
-                    t = nx.shortest_path_length(G, u, v, weight='travel_time')
-                    metric_G.add_edge(u, v, distance=t)
-                except nx.NetworkXNoPath:
-                    print(f"⚠️ No ruta {u}<->{v}")
-        # 2. Resolver TSP
-        tsp = approx.traveling_salesman_problem(metric_G, weight='distance', cycle=ciclo)
-        # 3. Reconstruir ruta real
-        ruta = []
-        for k in range(len(tsp)-1):
-            sub = nx.shortest_path(G, tsp[k], tsp[k+1], weight='travel_time')
-            ruta.extend(sub[:-1])
-        ruta.append(tsp[-1])
-        return ruta
-
-    def exportar_ruta_gpx(G, ruta, nombre="ruta"):
-        gpx = gpxpy.gpx.GPX()
-        track = gpxpy.gpx.GPXTrack(name=nombre)
-        gpx.tracks.append(track)
-        segment = gpxpy.gpx.GPXTrackSegment()
-        track.segments.append(segment)
-
-        for node in ruta:
-            y, x = G.nodes[node]['y'], G.nodes[node]['x']
-            segment.points.append(gpxpy.gpx.GPXTrackPoint(y, x))
-
-        with open(f'{nombre}.gpx', 'w') as f:
-            f.write(gpx.to_xml())
-    
-    def exportar_ruta_csv(G, ruta, nombre="ruta"):
-        with open(f"{nombre}.csv", mode='w', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(["latitud", "longitud"])
-            for node in ruta:
-                y, x = G.nodes[node]['y'], G.nodes[node]['x']
-                writer.writerow([y, x])
-    
-    place = place
-    mode = mode
-    G = actualizar_grafo(place, mode)
-    G = agregar_pesos_velocidad(G)
-    
-    nombres = [reverse_geocode(lat, lon) for lat, lon in coordenadas]
-    
-    nodos = [ox.distance.nearest_nodes(G, X=lon, Y=lat) for lat, lon in coordenadas]
-    
-    # 4. Elección de ruta: descomenta la opción que quieras
-    try:
-        # Ruta simple (solo ida) entre primer y último punto por menor tiempo
-        if simple:
-            ruta = get_shortest_path(G, nodos[0], nodos[-1])
-
-        # Ruta TSP (solo ida) optimizada por tiempo
-        if soloIdaTiempo:
-            ruta = resolver_tsp_velocidad(G, nodos, ciclo=False)
-
-        # Por defecto: TSP ida y vuelta por velocidad
-        if idaVeulta:
-            ruta = resolver_tsp_velocidad(G, nodos, ciclo=True)
-    except:
-        return "❌ Debes seleccionar un modo de ruta"    
-    tiempo_total = sum(
-        nx.shortest_path_length(G, ruta[i], ruta[i+1], weight='travel_time')
-        for i in range(len(ruta)-1)
+    ruta = client.directions(
+        coordinates=[origen, destino],
+        profile=vehiculo,
+        format="geojson",
+        elevation=usar_elevacion,
+        instructions=instrucciones,
+        extra_info=["waytype"],
+        options=opciones
     )
-    
-    distancia_total = sum(G[ruta[i]][ruta[i+1]][0]['length'] for i in range(len(ruta)-1))
-    
-    lat_center = sum(lat for lat, lon in coordenadas)/len(coordenadas)
-    
-    lon_center = sum(lon for lat, lon in coordenadas)/len(coordenadas)
-    
-    mapa = folium.Map(location=[lat_center, lon_center], zoom_start=13)
-    
-    for u, v in zip(ruta[:-1], ruta[1:]):
-        pu = (G.nodes[u]['y'], G.nodes[u]['x'])
-        pv = (G.nodes[v]['y'], G.nodes[v]['x'])
-        folium.PolyLine([pu, pv], color='red', weight=5).add_to(mapa)
 
-    for (lat, lon), nombre in zip(coordenadas, nombres):
-        folium.Marker([lat, lon], popup=nombre).add_to(mapa)
-    mapa.save("mapa_personalizado.html")
-    #ox.save_graphml(G, filepath="grafo_usado.graphml")
-    #exportar_ruta_gpx(G, ruta)
-    #exportar_ruta_csv(G, ruta)
-    return {
-        "tiempo_estimado": segundos_a_tiempo(tiempo_total),
-        "distancia_km": f"{distancia_total/1000:.2f} km",
-        "nodos_visitados": len(set(ruta)),
-        "tipo_ruta": "Simple" if simple else "TSP ida" if soloIdaTiempo else "TSP ida y vuelta",
-        
-    }
+    props = ruta["features"][0]["properties"]
+    resumen = props["summary"]
+    
+    distancia_km = resumen["distance"] / 1000
+    duracion_min = resumen["duration"] / 60
+    ascenso = resumen.get("ascent", 0)
+    descenso = resumen.get("descent", 0)
 
-#lat, lon = obtener_coordenadas("Carretera Turbaco - Arjona, Turbaco, Bolívar, Caribe, Colombia")
-def regiones (ID):
-    URL = f"https://secure.geonames.org/childrenJSON?geonameId={ID}&username=compracio"
-    respuesta = requests.get(URL)
-    regiones = respuesta.json()['geonames']
-    re = []
-    for region in regiones:
-        re.append((region['name'], region['geonameId']))
-    return re
+    print(f"📏 Distancia: {distancia_km:.2f} km")
+    print(f"⏱️ Duración estimada: {duracion_min:.2f} minutos")
+    print(f"📈 Ascenso: {ascenso:.2f} m")
+    print(f"📉 Descenso: {descenso:.2f} m")
 
+    # Mapa centrado entre origen y destino
+    centro = [(origen[1] + destino[1]) / 2, (origen[0] + destino[0]) / 2]
+    mapa = folium.Map(location=centro, zoom_start=7)
+
+    coords_ruta = ruta["features"][0]["geometry"]["coordinates"]
+    ruta_latlon = [[lat, lon] for lon, lat, *_ in coords_ruta]
+
+    folium.PolyLine(
+        ruta_latlon,
+        color="blue",
+        weight=5,
+        tooltip=f"{distancia_km:.1f} km - {duracion_min:.1f} min"
+    ).add_to(mapa)
+
+    folium.Marker(location=[origen[1], origen[0]], tooltip=f"Origen: inicio - {reverse_geocode(origen[1], origen[0])}").add_to(mapa)
+    folium.Marker(location=[destino[1], destino[0]], tooltip=f"Destino: destino - {reverse_geocode(destino[1], destino[0])}").add_to(mapa)
+
+    # Asegura que la carpeta templates/Optimizacion-de-rutas exista
+    ruta_templates = os.path.join(os.getcwd(), "templates", "Optimizacion-de-rutas", "temp")
+    os.makedirs(ruta_templates, exist_ok=True)
+    nombre_mapa = os.path.join(ruta_templates, nombre_mapa)
+    html = os.path.basename(nombre_mapa)
+
+    mapa.save(nombre_mapa)
+    print(f"✅ Mapa guardado como {nombre_mapa}")
+
+    return distancia_km, duracion_min, html, ascenso, descenso
 #info2, encontrados = sugerencias(lon, lat)
 #print(f"Total de POIs encontrados: {encontrados}")
 #print(info2)

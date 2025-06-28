@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Optimización de Rutas{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Optimizacion-de-rutas.css') }}">
+{% endblock %}
+{% block content %}
+    <main class="select">
+        <h2 class="select__title">Ruta Optimizada</h2>
+        <p class="select__text">📏 Distancia: {{ distancia }} km</p>
+        <p class="select__text">⏱️ Duración: {{ duracion }} minutos</p>
+        {% if asenso == "No hay ascenso" %}
+            <p class="select__text">📈 Ascenso: {{ asenso }}</p>
+        {% else %}
+            <p class="select__text">📈 Ascenso: {{ asenso }} metros</p>
+        {% endif %}
+        {% if descenso == "No hay descenso" %}
+            <p class="select__text">📉 Descenso: {{ descenso }}</p>
+        {% else %}
+            <p class="select__text">📉 Descenso: {{ descenso }} metros</p>
+        {% endif %}
+        <a href="{{ url_for('mostrar_mapa', filename=direccion_mapa) }}" class="select__option" target="_blank">Ver mapa</a>
+        <a href="/optimizacion_de_rutas" class="select__option">Regresar</a>
+    </main>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Optimización de Rutas{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Optimizacion-de-rutas.css') }}">
+{% endblock %}
+{% block content %}
+    <main class="select">
+        <a href="/optimizacion_de_rutas/Solo-2-rutas" class="select__option">Solo 2 rutas</a>
+        <a href="/optimizacion_de_rutas/Mas-de-2-rutas-sin-retorno_cantidad" class="select__option">Mas de 2 rutas sin retorno</a>
+        <a href="" class="select__option">Mas de 2 rutas con retorno</a>
+    </main>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Optimización de Rutas{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Optimizacion-de-rutas.css') }}">
+{% endblock %}
+{% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <main class="select">
+        <form method="post">
+            <h2 class="select__title">Añade el punto de inicio y destino</h2>
+            <input type="text" name="Hubicacion1" id="Hubicacion1" placeholder="Inicio" required class="select__input">
+            <input type="text" name="Hubicacion2" id="Hubicacion2" placeholder="Destino" required class="select__input">
+            <select name="vehiculo" id="vehiculo" class="select__input" required>
+                <option value="">-- Selecciona un vehículo --</option>
+                <option value="driving-hgv">🚛 Trailer o tractomula</option>
+                <option value="driving-hgv">🚚 Camión rígido / mediano</option>
+                <option value="driving-car">🚐 Furgoneta o camioneta</option>
+                <option value="driving-car">🏍️ Motocicleta (ligera)</option> <!-- mismo valor, pero texto distinto -->
+                <option value="cycling-regular">🚲 Bicicleta</option>
+                <option value="cycling-electric">⚡ Bici eléctrica</option>
+                <option value="foot-walking">🚶 A pie</option>
+            </select>
+            <input type="submit" value="Enviar" class="select_submit">
+        </form>
+    </main>
+{% endblock %}

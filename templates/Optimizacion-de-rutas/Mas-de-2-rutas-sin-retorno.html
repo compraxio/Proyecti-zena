@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Optimización de Rutas{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Optimizacion-de-rutas.css') }}">
+{% endblock %}
+{% block content %}
+    <main class="select">
+        <form method="post">
+            <h2 class="select__title">coloca las rutas</h2>
+            {% for i in range(cantidad) %}
+            <input type="text" name="ruta{{ i }}" id="ruta{{ i }}" placeholder="Ruta {{ i }}" required class="select__input">
+            {% endfor %}
+            <input type="submit" value="Enviar" class="select_submit">
+        </form>
+    </main>
+{% endblock %}

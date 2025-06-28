@@ -10,20 +10,6 @@
 # 1. IMPORTACIÓN DE LIBRERÍAS Y SERVICIOS
 # ============================================================
 
-# --- Librerías de rutas y mapas ---
-import osmnx as ox
-import networkx as nx
-import matplotlib.pyplot as plt
-from geopy.distance import great_circle
-import folium
-import time
-from networkx.algorithms import approximation as approx
-import gpxpy
-import gpxpy.gpx
-import geopandas as gpd
-import csv
-from pathlib import Path
-
 # --- Librerías de IA y búsqueda ---
 from google import genai
 from google.genai import types
@@ -33,7 +19,7 @@ from serpapi import GoogleSearch as Gg
 # --- Librerías de Flask y extensiones ---
 from flask import (
     Flask, render_template, url_for, request, flash, redirect,
-    send_file, session, jsonify, Response
+    send_file, session, jsonify, Response, send_from_directory
 )
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
@@ -44,13 +30,13 @@ import pyotp
 import qrcode
 from functools import wraps
 import io
-import json
-
-
+import time
+import os
+from datetime import datetime, timedelta
 # --- Servicios personalizados ---
-from services.correo import correo_error, qr
+from services.correo import correo_error, qr, limpiar_archivos_expirados
 from services.Ruta import *
-
+from services.Ruta import minutos_a_tiempo
 # ============================================================
 # 2. CONFIGURACIÓN DE LA APLICACIÓN Y EXTENSIONES
 # ============================================================
@@ -61,6 +47,7 @@ app = Flask(__name__)
 client = genai.Client(api_key="AIzaSyBGxDkqcairULlOIvMycALEvclJn3-e-_o")
 Clav = "AIzaSyBi_IAVJo42jH0ziRi72nO5XrU9DM7dFcE"
 key = "c4ea6b07cbade43b7a7c7955016ffc9463975b858b0ccb50863bdc57e40bf1c8"  # SerpApi
+POIs = "5b3ce3597851110001cf6248c78a74e4d1fd423588a0378499a42c6d"
 
 # --- Configuración de base de datos ---
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///web.db'
@@ -130,6 +117,15 @@ def login_required(f):
 # 5. RUTAS PRINCIPALES Y DE NAVEGACIÓN
 # ============================================================
 
+@app.route("/limpiar")
+def ruta_limpieza():
+    eliminados = limpiar_archivos_expirados()
+    return jsonify({
+        "status": "ok",
+        "archivos_eliminados": eliminados,
+        "hora": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    })
+    
 # --- Registro de usuario con TOTP ---
 @app.route('/usuario/<key>', methods=['GET', 'POST'])
 def usuario(key):
@@ -201,40 +197,82 @@ def gestion_de_productos():
 def control_de_inventario():
     """Página de control de inventario."""
     return render_template('Control-de-inventario.html')
+# ============================================================
+# 5. OPTIMIZACIÓN DE RUTAS
+# ============================================================
+@app.route('/optimizacion_de_rutas')
+def optimizacion_de_rutas():
+    return render_template('Optimizacion-de-rutas/Optimizacion-de-rutas.html')
+# ============================================================
+# 2 rutas sin retorno
+# ============================================================
+@app.route('/optimizacion_de_rutas/Solo-2-rutas', methods=['GET', 'POST'])
+def solo_2_rutas():
+    if request.method == 'POST':
+        try:
+            inicio = obtener_coordenadas(request.form.get('Hubicacion1'))
+            destino = obtener_coordenadas(request.form.get('Hubicacion2'))
+            vehiculo = request.form.get('vehiculo')  # Valor por defecto si no se selecciona
 
-@app.route('/optimizacion_de_rutas/<valor1>', methods=['GET', 'POST'])
-@app.route('/optimizacion_de_rutas/<valor1>/<valor2>', methods=['GET', 'POST'])
-@app.route('/optimizacion_de_rutas/<valor1>/<valor2>/<valor3>/<name_region>', methods=['GET', 'POST'])
-@app.route('/optimizacion_de_rutas/<valor1>/<valor2>/<valor3>/<name_region>/<valor4>/<info>', methods=['GET', 'POST'])
-def optimizacion_de_rutas(valor1, valor2=None, valor3=None, name_region=None, valor4=None, info=None):
-    paises = []
-    with open('services/Paises.json', encoding='utf-8') as f:
-        dato = json.load(f)
-    for pais in dato:
-        paises.append(pais['countryName'])
+            distancia, duracion, direccion_mapa, asenso, descenso = ruta_logistica_simple(
+                inicio, destino, vehiculo, POIs, nombre_mapa=f"ruta_mapa{inicio}-{destino}.html"
+            )
+            distancia = round(distancia, 2)
+            duracion = minutos_a_tiempo(duracion)
+            if asenso == 0:
+                asenso = "No hay ascenso"
+            if descenso == 0:
+                descenso = "No hay descenso"
 
-    valor_bool1 = valor1.lower() == 'true'
-    valor_bool2 = valor2.lower() == 'true' if valor2 is not None else False
-    valor_bool3 = valor3.lower() == 'true' if valor3 is not None else False
-    valor_bool4 = valor4.lower() == 'true' if valor4 is not None else False
+            return redirect(url_for(
+                'solo_2_rutas_mapa_info',
+                distancia=distancia,
+                duracion=duracion,
+                direccion_mapa=direccion_mapa,
+                asenso=asenso,
+                descenso=descenso
+            ))
+        except Exception as e:
+            print(f"Error al calcular la ruta: {e}")
+            flash('Ocurrió un error al calcular la ruta. Por favor, revisa los datos ingresados o intenta más tarde.', 'danger')
+            correo_error(e)
+            return redirect(url_for('solo_2_rutas'))
 
-    if valor_bool2:
-        if request.method == 'POST':
-            pais = request.form.get("pais1")
-            # Redirige al siguiente paso con el país seleccionado como name_region
-            return redirect(url_for('optimizacion_de_rutas', valor1="false", valor2="false", valor3='true', name_region=pais))
-        return render_template('Optimizacion-de-rutas.html', paises=paises, valor_1=valor_bool1, valor_2=valor_bool2, valor_3=valor_bool3, valor_4=valor_bool4, info=info)
-    elif valor_bool3:
-        if request.method == 'POST':
-            Ruta = []
-            inicio = obtener_coordenadas(request.form.get("destino1"))
-            destino = obtener_coordenadas(request.form.get("destino2"))
-            Ruta.append((inicio, destino))
-            info = ruta(name_region, Ruta, mode = "drive", simple=True)
-            return redirect(url_for('optimizacion_de_rutas', valor1=False, valor2=False, valor3=False, name_region=name_region, valor4=True, info=info))
-        return render_template('Optimizacion-de-rutas.html', paises=paises, valor_1=valor_bool1, valor_2=valor_bool2, valor_3=valor_bool3, valor_4=valor_bool4, info=info)
-    else:
-        return render_template('Optimizacion-de-rutas.html', paises=paises, valor_1=valor_bool1, valor_2=valor_bool2, valor_3=valor_bool3, valor_4=valor_bool4, info=info)
+    return render_template('Optimizacion-de-rutas/Solo-2-rutas.html')
+
+@app.route('/optimizacion_de_rutas/Solo-2-rutas-mapa/<distancia>/<duracion>/<direccion_mapa>/<asenso>/<descenso>', methods=['GET', 'POST'])
+def solo_2_rutas_mapa_info(distancia, duracion, direccion_mapa, asenso, descenso):
+
+    return render_template('Optimizacion-de-rutas/Info-2ruta.html', distancia=distancia, duracion=duracion, direccion_mapa=direccion_mapa, asenso=asenso, descenso=descenso)
+
+@app.route('/mapas/<filename>')
+def mostrar_mapa(filename):
+    carpeta = os.path.join(os.getcwd(), "templates", "Optimizacion-de-rutas", "temp")
+    return send_from_directory(carpeta, filename)
+# ============================================================
+# Mas de 2 rutas sin retorno
+# ============================================================
+@app.route('/optimizacion_de_rutas/Mas-de-2-rutas-sin-retorno_cantidad', methods=['GET', 'POST'])
+def mas_de_2_rutas_sin_retorno_cantidad():
+    if request.method == 'POST':
+        
+        cantidad = request.form.get('cantidad')
+        
+        return redirect(url_for('mas_de_2_rutas_sin_retorno', cantidad=cantidad))
+    
+    return render_template('Optimizacion-de-rutas/Mas-de-2-rutas-sin-retorno-cantidad.html')
+
+@app.route('/optimizacion_de_rutas/Mas-de-2-rutas-sin-retorno/<cantidad>', methods=['GET', 'POST'])
+def mas_de_2_rutas_sin_retorno(cantidad):
+    if request.method == 'POST':
+        rutas = []
+        for i in range(int(cantidad)):
+            ruta = obtener_coordenadas(request.form.get(f'ruta{i+1}'))
+            rutas.append(ruta)
+            time.sleep(2)
+        return render_template('Optimizacion-de-rutas/Mas-de-2-rutas-sin-retorno.html', rutas=rutas)
+    return render_template('Optimizacion-de-rutas/Mas-de-2-rutas-sin-retorno.html', cantidad=int(cantidad))
+
 @app.route('/gestion_de_vehiculos')
 def gestion_de_vehiculos():
     """Página de gestión de vehículos."""
