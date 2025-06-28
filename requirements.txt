@@ -11,3 +11,4 @@ pyotp
 qrcode[pil]
 openrouteservice
 folium
+geopandas
